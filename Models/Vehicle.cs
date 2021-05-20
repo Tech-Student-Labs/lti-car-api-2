@@ -14,6 +14,4 @@ namespace Models
         public string VIN { get; set; }
         public double sellingPrice { get; set; }
     }
-
-
 }
