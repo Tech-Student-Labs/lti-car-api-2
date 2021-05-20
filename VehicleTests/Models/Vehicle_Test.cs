@@ -11,7 +11,6 @@ namespace VehicleTests
         public void Should_CreateAnInstanceOfVehicle()
         {
             Vehicle vehicle = new Vehicle();
-
             vehicle.Should().NotBeNull();
         }
     }

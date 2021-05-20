@@ -2,9 +2,8 @@
 
 namespace Models
 {
-
-        public class Database
-        {
-            private List<Vehicle> vehicles = new List<Vehicle>() { };
-        }
+    public class Database
+    {
+        private List<Vehicle> vehicles = new List<Vehicle>() { };
+    }
 }

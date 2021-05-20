@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Models
 {
-    public class Vehicle
+    public class Vehicle : IVehicle
     {
         public string Make { get; set; }
         public string Model { get; set; }
