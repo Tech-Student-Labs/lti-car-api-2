@@ -32,8 +32,6 @@ namespace VehicleDatabase
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "VehicleDatabase", Version = "v1"});
             });
-
-            // services.AddDbContext<DatabaseContext>(options => options.use)
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
