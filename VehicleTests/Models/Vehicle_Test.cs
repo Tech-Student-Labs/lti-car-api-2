@@ -5,7 +5,7 @@ using Xunit;
 
 namespace VehicleTests
 {
-    public class UnitTest1
+    public class VehicleTest
     {
         [Fact]
         public void Should_CreateAnInstanceOfVehicle()
