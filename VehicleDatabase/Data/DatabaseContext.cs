@@ -6,6 +6,9 @@ namespace VehicleDatabase.Data
     public class DatabaseContext : DbContext
     {
         public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<InventoryVehicle> Inventory { get; set; }
+        public DbSet<VehicleImage> VehicleImages { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -23,6 +26,17 @@ namespace VehicleDatabase.Data
                 new Vehicle { VIN = "YU1SL658486123463", Make = "Mitsubishi", Model = "Eclipse", Year = "2005", Miles = 75000, Color = "Purple", sellingPrice = 6000, ImageURI = "https://via.placeholder.com/150"}
             );
 
+            modelBuilder.Entity<User>().HasData(
+                new User()
+            );
+
+            modelBuilder.Entity<InventoryVehicle>().HasData(
+                new InventoryVehicle()
+            );
+            
+            modelBuilder.Entity<VehicleImage>().HasData(
+                new VehicleImage()
+                );
             base.OnModelCreating(modelBuilder);
         }
     }
