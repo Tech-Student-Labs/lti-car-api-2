@@ -13,7 +13,7 @@ namespace Models
         public string Year { get; set; }
         public int Miles { get; set; }
         public string Color { get; set; }
-        public string[] Images { get; set; }
+        public string ImageURI { get; set; }
         public double sellingPrice { get; set; }
     }
 }

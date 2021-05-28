@@ -7,7 +7,7 @@
         string Year { get; set; }
         int Miles { get; set; }
         string Color { get; set; }
-        string[] Images { get; set; }
+        string ImageURI { get; set; }
         string VIN { get; set; }
         double sellingPrice { get; set; }
     }
