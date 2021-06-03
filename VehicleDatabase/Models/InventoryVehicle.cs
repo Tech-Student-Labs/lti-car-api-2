@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
-using VehicleDatabase.Interfaces;
-using VehicleDatabase.Models;
+using Models;
 
-namespace Models
+namespace VehicleDatabase.Models
 {
-    public class InventoryVehicle
+    public class InventoryVehicle : IInventoryVehicle
     {
         public int Id { get; set; }
 

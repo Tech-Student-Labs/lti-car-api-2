@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Models;
 using VehicleDatabase.Interfaces;
 
 namespace VehicleDatabase.Models
 {
-    public class Vehicle
+    public class Vehicle : IVehicle
     {
         public int Id { get; set; }
         public string VIN { get; set; }

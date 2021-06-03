@@ -12,7 +12,7 @@ namespace VehicleDatabase.Interfaces
         string Year { get; set; }
         int Miles { get; set; }
         string Color { get; set; }
-        List<VehicleImage> VehicleImages { get; set; }
+        ICollection<VehicleImage> VehicleImages { get; set; }
         double SellingPrice { get; set; }
         User User { get; set; }
         int UserId { get; set; }

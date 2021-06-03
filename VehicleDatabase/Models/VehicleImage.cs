@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 using VehicleDatabase.Interfaces;
 
 namespace VehicleDatabase.Models
 {
-    public class VehicleImage
+    public class VehicleImage : IVehicleImage
     {
         public int Id { get; set; }
         [ForeignKey("Vehicle")]

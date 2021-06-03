@@ -1,21 +1,20 @@
 ﻿using FluentAssertions;
-using Models;
 using VehicleDatabase.Models;
 using Xunit;
 
 namespace VehicleTests
 {
-    public class User_Test
+    public class InventoryVehicle_Test
     {
         [Fact]
-        public void Should_CreateAnInstanceOfUser()
+        public void Action_Should_When()
         {
             //Given
-            
+            InventoryVehicle inventoryVehicle = new InventoryVehicle();
             //When
-            User user = new User();
+
             //Then
-            user.Should().NotBeNull();
+            inventoryVehicle.Should().NotBeNull();
 
         }
     }
