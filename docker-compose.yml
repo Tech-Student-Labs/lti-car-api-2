@@ -1,0 +1,21 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  webapi:
+    image: "rmuehler/vehicle-web-api"
+    build: .
+    ports:
+      - "443:443"
+      - "80:80"
+    depends_on:
+      - database
+  database:
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+#    volumes:
+#        - sql-data:/var/opt/mssql/data 
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "SusPassword2!"
+      ACCEPT_EULA: "Y"
+#volumes:
+#  sql-data:

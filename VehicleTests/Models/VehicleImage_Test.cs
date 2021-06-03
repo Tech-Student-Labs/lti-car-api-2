@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
-using Models;
-using VehicleDatabase.Models;
+using VehicleWebAPI.Models;
 using Xunit;
 
 namespace VehicleTests

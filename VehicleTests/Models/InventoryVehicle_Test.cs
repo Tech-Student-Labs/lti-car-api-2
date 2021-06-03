@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
-using VehicleDatabase.Models;
+using VehicleWebAPI.Models;
 using Xunit;
 
-namespace VehicleTests
+namespace VehicleTests.Models
 {
     public class InventoryVehicle_Test
     {
