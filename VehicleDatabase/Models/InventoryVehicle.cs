@@ -1,9 +1,15 @@
-﻿namespace Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Models;
+
+namespace VehicleDatabase.Models
 {
     public class InventoryVehicle : IInventoryVehicle
     {
-        public Vehicle Vehicle { get; set; }
-        public int VehicleVIN { get; set; }
+        public int Id { get; set; }
+
+        [ForeignKey("Vehicle")]
+        public int VehicleId { get; set; }
+
         public double Price { get; set; }
     }
 }
