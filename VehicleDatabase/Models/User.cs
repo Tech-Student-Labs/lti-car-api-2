@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using Models;
+using VehicleDatabase.Interfaces;
 
-namespace Models
+namespace VehicleDatabase.Models
 {
     public class User : IUser
     {
