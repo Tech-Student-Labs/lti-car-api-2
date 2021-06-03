@@ -1,0 +1,142 @@
+[33mcommit 3b1fe588b0e7f7fb4d53cf1557debd807e0fbfdf[m[33m ([m[1;36mHEAD -> [m[1;32mfeature/docker-containerization[m[33m, [m[1;31morigin/feature/docker-containerization[m[33m)[m
+Author: rmuehler <67pha0vz!!!!!>
+Date:   Thu Jun 3 15:50:31 2021 -0400
+
+    moved db back to webapi proj, added docker-compose to containzerize app
+
+[33mcommit 2ca55920c3c3996c227bd6568b7191e7a12b2c41[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m
+Merge: 40f68fc af5c84d
+Author: Andrew Mitschke <ammitchky@gmail.com>
+Date:   Thu Jun 3 10:36:18 2021 -0500
+
+    Merge pull request #18 from Tech-Student-Labs/feature/database-setup-fix
+    
+    Database setup fix
+
+[33mcommit af5c84dd8d7a3f32422d455b85c3b24f873eeb0d[m[33m ([m[1;31morigin/feature/database-setup-fix[m[33m, [m[1;32mfeature/database-setup-fix[m[33m)[m
+Author: Robert Muehler <robertmuehler@gmail.com>
+Date:   Thu Jun 3 10:32:17 2021 -0400
+
+    added test for invetoryvehicle, fixed old interfaces
+
+[33mcommit 6830f25d12bb8f7b8b0231947e5ebaf37797232f[m
+Author: Robert Muehler <robertmuehler@gmail.com>
+Date:   Thu Jun 3 10:24:12 2021 -0400
+
+    reseeded data, fixed foreign key issue
+
+[33mcommit 40f68fc36b7d3de36ff51b2fa966bc737f25380e[m
+Merge: 21e1f34 35060fb
+Author: GannonDeWalt <77300110+GannonDeWalt@users.noreply.github.com>
+Date:   Fri May 28 14:33:34 2021 -0500
+
+    Merge pull request #12 from Tech-Student-Labs/feature/database-models
+    
+    Feature/database models
+
+[33mcommit 35060fb2350a5b7731781b55f9280e88512a4f00[m[33m ([m[1;32mfeature/database-models[m[33m)[m
+Author: Robert Muehler <robertmuehler@gmail.com>
+Date:   Fri May 28 15:30:32 2021 -0400
+
+    fixed the seed data for vehicle to fit new model
+
+[33mcommit 21e1f34d4c2b28760f11d81ca67bc482d874ad9e[m
+Author: Robert Muehler <robertmuehler@gmail.com>
+Date:   Fri May 28 15:26:26 2021 -0400
+
+    Create dotnet.yml
+    
+    Added github action for testing
+
+[33mcommit b5ef4d7a661a2bcc18e7cf7e51c25bbf2be89151[m
+Author: Robert Muehler <robertmuehler@gmail.com>
+Date:   Fri May 28 15:15:45 2021 -0400
+
+    added dotnet-ef tool
+
+[33mcommit 9af2fad5e91ed4f49d01460c9f88215b007cccac[m
+Author: Robert Muehler <robertmuehler@gmail.com>
+Date:   Fri May 28 15:07:00 2021 -0400
+
+    added models for DatabaseContext.cs
+
+[33mcommit 657e724d23873badc95fd06cdce3d588c80dbb70[m
+Merge: d3606d5 c64b7dd
+Author: GannonDeWalt <77300110+GannonDeWalt@users.noreply.github.com>
+Date:   Fri May 28 14:14:28 2021 -0500
+
+    Merge pull request #11 from Tech-Student-Labs/VehicleSeeding
+    
+    Vehicle seeding
+
+[33mcommit c64b7dd3223f5e939d033dafe8b3f22211999532[m
+Author: Raaed Khan <raaedk@gmail.com>
+Date:   Fri May 28 14:58:02 2021 -0400
+
+    refactor
+
+[33mcommit 64784ddadab08b3208d105a5ef49a2906796349e[m
+Author: Raaed Khan <raaedk@gmail.com>
+Date:   Fri May 28 14:57:27 2021 -0400
+
+    added more vehicles
+
+[33mcommit 815ea419a6e90fe2b93ca778b34ee604ffb95ff0[m
+Author: Raaed Khan <raaedk@gmail.com>
+Date:   Fri May 28 14:54:38 2021 -0400
+
+    applied migration to db
+
+[33mcommit 3bd6f96cb9c1c6780cc4c4063c5b39eb5fd3a54d[m
+Author: Raaed Khan <raaedk@gmail.com>
+Date:   Fri May 28 14:22:26 2021 -0400
+
+    seeding data
+
+[33mcommit d3606d55834ce6093931a898fe0960448a72ae78[m
+Merge: a27e6d8 de375bf
+Author: raaedk <raaedk@gmail.com>
+Date:   Fri May 28 13:38:12 2021 -0400
+
+    Merge pull request #10 from Tech-Student-Labs/feature/database-setup
+    
+    created database webapp project, moved models to database
+
+[33mcommit de375bff9851f6e2a991c9c4a84c1c8d4498ba3e[m[33m ([m[1;32mfeature/database-setup[m[33m)[m
+Author: Robert Muehler <robertmuehler@gmail.com>
+Date:   Fri May 28 13:32:08 2021 -0400
+
+    created database webapp project, moved models to database
+
+[33mcommit a27e6d8679eaadeeea8af9661834d9acc72abcf2[m
+Merge: 05208e7 bb0b85f
+Author: raaedk <raaedk@gmail.com>
+Date:   Thu May 20 16:20:00 2021 -0400
+
+    Merge pull request #6 from Tech-Student-Labs/feature/vehicleclass
+    
+    Create A Vehicle Model
+
+[33mcommit bb0b85f9f6e2b7f1dcabc93202d1b58a8ef1ebc8[m[33m ([m[1;32mfeature/vehicleclass[m[33m)[m
+Author: Robert Muehler <robertmuehler@gmail.com>
+Date:   Thu May 20 16:18:00 2021 -0400
+
+    reformatted the code
+
+[33mcommit fdd9c6b2764713d6f6c42116e5bd2b8e6dafee57[m
+Author: Robert Muehler <robertmuehler@gmail.com>
+Date:   Thu May 20 16:12:00 2021 -0400
+
+    added a Vehicle interface
+
+[33mcommit f3467dd2e2d34111ffea05fb8fe41b7b89252056[m
+Author: Robert Muehler <robertmuehler@gmail.com>
+Date:   Thu May 13 16:58:07 2021 -0400
+
+    added test for instantiating a Vehicle
+
+[33mcommit 05208e7658c5e4d514c821bb7e48d4084ce14d34[m[33m ([m[1;32msetup[m[33m, [m[1;32mmaster[m[33m)[m
+Author: Robert Muehler <robertmuehler@gmail.com>
+Date:   Thu May 13 16:26:10 2021 -0400
+
+    initial setup for car api
