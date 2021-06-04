@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using VehicleDatabase.Data;
+using VehicleWebAPI.Services;
 
 namespace VehicleWebAPI
 {
@@ -29,8 +31,10 @@ namespace VehicleWebAPI
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "VehicleWebAPI", Version = "v1"});
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "VehicleDatabase", Version = "v1"});
             });
+            services.AddScoped<DatabaseContext>();
+            services.AddScoped<IVehicleDatabaseService, VehicleDatabaseService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,7 +44,7 @@ namespace VehicleWebAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "VehicleWebAPI v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "VehicleDatabase v1"));
             }
 
             app.UseHttpsRedirection();
