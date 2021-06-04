@@ -2,10 +2,11 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VehicleDatabase.Data;
 
-namespace VehicleDatabase.Migrations
+namespace VehicleWebAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
     partial class DatabaseContextModelSnapshot : ModelSnapshot
@@ -14,19 +15,22 @@ namespace VehicleDatabase.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.6");
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("ProductVersion", "5.0.6")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Models.InventoryVehicle", b =>
+            modelBuilder.Entity("VehicleWebAPI.Models.InventoryVehicle", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<double>("Price")
-                        .HasColumnType("REAL");
+                        .HasColumnType("float");
 
                     b.Property<int>("VehicleId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -41,23 +45,24 @@ namespace VehicleDatabase.Migrations
                         });
                 });
 
-            modelBuilder.Entity("VehicleDatabase.Models.User", b =>
+            modelBuilder.Entity("VehicleWebAPI.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Authorization")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -72,38 +77,39 @@ namespace VehicleDatabase.Migrations
                         });
                 });
 
-            modelBuilder.Entity("VehicleDatabase.Models.Vehicle", b =>
+            modelBuilder.Entity("VehicleWebAPI.Models.Vehicle", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Color")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Make")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Miles")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("Model")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("SellingPrice")
-                        .HasColumnType("REAL");
+                        .HasColumnType("float");
 
                     b.Property<int>("Status")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("VIN")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Year")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -179,17 +185,18 @@ namespace VehicleDatabase.Migrations
                         });
                 });
 
-            modelBuilder.Entity("VehicleDatabase.Models.VehicleImage", b =>
+            modelBuilder.Entity("VehicleWebAPI.Models.VehicleImage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<byte[]>("ImageData")
-                        .HasColumnType("BLOB");
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<int>("VehicleId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -205,9 +212,9 @@ namespace VehicleDatabase.Migrations
                         });
                 });
 
-            modelBuilder.Entity("VehicleDatabase.Models.Vehicle", b =>
+            modelBuilder.Entity("VehicleWebAPI.Models.Vehicle", b =>
                 {
-                    b.HasOne("VehicleDatabase.Models.User", "User")
+                    b.HasOne("VehicleWebAPI.Models.User", "User")
                         .WithMany("Vehicles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -216,21 +223,21 @@ namespace VehicleDatabase.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("VehicleDatabase.Models.VehicleImage", b =>
+            modelBuilder.Entity("VehicleWebAPI.Models.VehicleImage", b =>
                 {
-                    b.HasOne("VehicleDatabase.Models.Vehicle", null)
+                    b.HasOne("VehicleWebAPI.Models.Vehicle", null)
                         .WithMany("VehicleImages")
                         .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("VehicleDatabase.Models.User", b =>
+            modelBuilder.Entity("VehicleWebAPI.Models.User", b =>
                 {
                     b.Navigation("Vehicles");
                 });
 
-            modelBuilder.Entity("VehicleDatabase.Models.Vehicle", b =>
+            modelBuilder.Entity("VehicleWebAPI.Models.Vehicle", b =>
                 {
                     b.Navigation("VehicleImages");
                 });
