@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace VehicleDatabase.Migrations
+namespace VehicleWebAPI.Migrations
 {
-    public partial class Initialsetup : Migration
+    public partial class initialsetup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,10 +11,10 @@ namespace VehicleDatabase.Migrations
                 name: "Inventory",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    VehicleId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Price = table.Column<double>(type: "REAL", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VehicleId = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -25,12 +25,12 @@ namespace VehicleDatabase.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Email = table.Column<string>(type: "TEXT", nullable: true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: true),
-                    Authorization = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Authorization = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -41,17 +41,17 @@ namespace VehicleDatabase.Migrations
                 name: "Vehicles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    VIN = table.Column<string>(type: "TEXT", nullable: true),
-                    Make = table.Column<string>(type: "TEXT", nullable: true),
-                    Model = table.Column<string>(type: "TEXT", nullable: true),
-                    Year = table.Column<string>(type: "TEXT", nullable: true),
-                    Miles = table.Column<int>(type: "INTEGER", nullable: false),
-                    Color = table.Column<string>(type: "TEXT", nullable: true),
-                    SellingPrice = table.Column<double>(type: "REAL", nullable: false),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Status = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VIN = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Make = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Model = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Year = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Miles = table.Column<int>(type: "int", nullable: false),
+                    Color = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SellingPrice = table.Column<double>(type: "float", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -68,10 +68,10 @@ namespace VehicleDatabase.Migrations
                 name: "VehicleImages",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    VehicleId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ImageData = table.Column<byte[]>(type: "BLOB", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VehicleId = table.Column<int>(type: "int", nullable: false),
+                    ImageData = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -97,27 +97,14 @@ namespace VehicleDatabase.Migrations
             migrationBuilder.InsertData(
                 table: "Vehicles",
                 columns: new[] { "Id", "Color", "Make", "Miles", "Model", "SellingPrice", "Status", "UserId", "VIN", "Year" },
-                values: new object[] { 1, "Silver", "Toyota", 145000, "Corolla", 2000.0, 1, 1, "4Y1SL65848Z411439", "1997" });
-
-            migrationBuilder.InsertData(
-                table: "Vehicles",
-                columns: new[] { "Id", "Color", "Make", "Miles", "Model", "SellingPrice", "Status", "UserId", "VIN", "Year" },
-                values: new object[] { 2, "Black", "Honda", 145000, "Civic", 3000.0, 1, 1, "5Z1SL39746U411411", "1997" });
-
-            migrationBuilder.InsertData(
-                table: "Vehicles",
-                columns: new[] { "Id", "Color", "Make", "Miles", "Model", "SellingPrice", "Status", "UserId", "VIN", "Year" },
-                values: new object[] { 3, "Blue", "Subaru", 175000, "Impreza", 4000.0, 1, 1, "7T1SL646726411440", "2005" });
-
-            migrationBuilder.InsertData(
-                table: "Vehicles",
-                columns: new[] { "Id", "Color", "Make", "Miles", "Model", "SellingPrice", "Status", "UserId", "VIN", "Year" },
-                values: new object[] { 4, "Red", "Mazda", 200000, "3", 2000.0, 0, 1, "9P1SL658486268352", "2007" });
-
-            migrationBuilder.InsertData(
-                table: "Vehicles",
-                columns: new[] { "Id", "Color", "Make", "Miles", "Model", "SellingPrice", "Status", "UserId", "VIN", "Year" },
-                values: new object[] { 5, "Purple", "Mitsubishi", 75000, "Eclipse", 6000.0, 2, 1, "YU1SL658486123463", "2005" });
+                values: new object[,]
+                {
+                    { 1, "Silver", "Toyota", 145000, "Corolla", 2000.0, 1, 1, "4Y1SL65848Z411439", "1997" },
+                    { 2, "Black", "Honda", 145000, "Civic", 3000.0, 1, 1, "5Z1SL39746U411411", "1997" },
+                    { 3, "Blue", "Subaru", 175000, "Impreza", 4000.0, 1, 1, "7T1SL646726411440", "2005" },
+                    { 4, "Red", "Mazda", 200000, "3", 2000.0, 0, 1, "9P1SL658486268352", "2007" },
+                    { 5, "Purple", "Mitsubishi", 75000, "Eclipse", 6000.0, 2, 1, "YU1SL658486123463", "2005" }
+                });
 
             migrationBuilder.InsertData(
                 table: "VehicleImages",

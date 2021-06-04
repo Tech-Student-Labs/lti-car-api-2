@@ -6,7 +6,10 @@ namespace VehicleDatabase.Data
 {
     public class DatabaseContext : DbContext
     {
-
+        public DatabaseContext(IConfiguration configuration)
+        {
+            
+        }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<InventoryVehicle> Inventory { get; set; }
@@ -14,8 +17,8 @@ namespace VehicleDatabase.Data
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=database;Database=Vehicle;User=sa;Password=SusPassword2!");
+        { 
+            optionsBuilder.UseSqlServer("Server=localhost,1433;Database=Vehicle;User=sa;Password=SusPassword2!");
             // optionsBuilder.UseSqlite("Data Source=Vehicle.db");
             base.OnConfiguring(optionsBuilder);
         }
