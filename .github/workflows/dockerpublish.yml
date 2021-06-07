@@ -22,4 +22,4 @@ jobs:
         with:
           push: true
           tags: my-docker-hub-namespace/my-docker-hub-repository:latest
-          file: VehicleWebApi/Dockerfile
+          file: VehicleWebAPI/Dockerfile
