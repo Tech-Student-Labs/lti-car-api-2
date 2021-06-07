@@ -9,9 +9,10 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{matrix.os}}
     strategy:
       matrix:
+        os: ['windows-latest', 'ubuntu-latest']
         dotnet: ['5.0.100', '5.0.200', '5.0.300']
 
     steps:
