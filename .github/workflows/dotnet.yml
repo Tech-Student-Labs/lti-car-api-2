@@ -28,7 +28,7 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
     - name: Publish
-      run: dotnet publish -c Release -o ./VehicleWebAPI/bin/Release/net${{matrix.dotnet}}/publish/
+      run: dotnet publish -c Release -o ./VehicleWebAPI/bin/Release/${{matrix.os}}-net${{matrix.dotnet}}/publish/
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.3
       with:
