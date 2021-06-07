@@ -25,11 +25,10 @@ jobs:
       run: dotnet test --no-build --verbosity normal
     - name: Publish
       run: dotnet publish --no-build
-    #- name: Upload a Build Artifact
-    #  uses: actions/upload-artifact@v2.2.3
-    #  with:
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2.2.3
+      with:
         # Artifact name
-    #    name: Car-Api-2-artifact
+        name: Car-Api-2-artifact
         # A file, directory or wildcard pattern that describes what to upload
-    #    path: 
-        # The desired behavior if no files are found using the provided path.
+        path: ./VehicleTests/bin/Debug/net5.0/publish/
