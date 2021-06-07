@@ -33,6 +33,6 @@ jobs:
       uses: actions/upload-artifact@v2.2.3
       with:
         # Artifact name
-        name: Car-Api-2-artifact-${{ matrix.dotnet }}
+        name: Car-Api-2-artifact-${{matrix.os}}-${{ matrix.dotnet }}
         # A file, directory or wildcard pattern that describes what to upload
         path: ./*/bin/Release/*/publish/
