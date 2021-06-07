@@ -16,10 +16,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup .NET Core ${{ matrix.dotnet-version }}
+    - name: Setup .NET Core ${{ matrix.dotnet }}
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: ${{ matrix.dotnet-version }}
+        dotnet-version: ${{ matrix.dotnet }}
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
@@ -27,11 +27,11 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
     - name: Publish
-      run: dotnet publish -c Release -o ./VehicleWebAPI/bin/Release/net${{matrix.dotnet-version}}/publish/
+      run: dotnet publish -c Release -o ./VehicleWebAPI/bin/Release/net${{matrix.dotnet}}/publish/
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.3
       with:
         # Artifact name
-        name: Car-Api-2-artifact-${{ matrix.dotnet-version }}
+        name: Car-Api-2-artifact-${{ matrix.dotnet }}
         # A file, directory or wildcard pattern that describes what to upload
         path: ./*/bin/Release/*/publish/
