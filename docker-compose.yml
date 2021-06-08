@@ -1,6 +1,6 @@
 services:
   webapi:
-    image: "rmuehler/vehicle-web-api"
+    image: "raaedprojectapi/webapi"
     build: .
     ports:
       - "443:443"

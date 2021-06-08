@@ -22,4 +22,4 @@ jobs:
         with:
           push: true
           tags: raaedprojectapi/webapi:latest
-          file: VehicleWebAPI/Dockerfile
+          file: ./Dockerfile
