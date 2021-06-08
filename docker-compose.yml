@@ -1,5 +1,6 @@
 services:
   webapi:
+    container_name: webapi
     image: "raaedprojectapi/webapi"
     build: .
     ports:
@@ -8,6 +9,7 @@ services:
     depends_on:
       - database
   database:
+    container_name: database
     image: "rmuehler/vehicle-database"
     volumes:
         - sql-data:/var/opt/mssql/data 
@@ -17,6 +19,7 @@ services:
       SA_PASSWORD: "SusPassword2!"
       ACCEPT_EULA: "Y"
   webui:
+    container_name: webui
     image: raaedk/vehicleui
     ports:
       - "80:80"

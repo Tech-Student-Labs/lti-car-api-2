@@ -1,4 +1,4 @@
-name: Publish Docker image
+name: Docker
 on:
   push:
     branches: [ main ]
@@ -17,5 +17,3 @@ jobs:
         run: docker run --network container:webapi appropriate/curl -s --retry 10 --retry-connrefused http://localhost:3000/
       - name: Test Database is up
         run: docker run --network container:database appropriate/curl -s --retry 10 --retry-connrefused http://localhost:1433/
-
-        
