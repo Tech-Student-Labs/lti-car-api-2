@@ -112,7 +112,8 @@ namespace VehicleTests.E2E_Tests
         db.SaveChanges();
         //WHEN GET is called
         var result = await client.GetAsync("/Vehicle");
-        var body = JsonSerializer.Deserialize<List<object>>(await result.Content.ReadAsStringAsync());
+        var body = JsonSerializer.Deserialize<List<Vehicle>>(await result.Content.ReadAsStringAsync(), 
+        new JsonSerializerOptions{PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
 
         //THEN returns 1 vehicle 
         body.Count().Should().Be(3);
@@ -259,7 +260,8 @@ namespace VehicleTests.E2E_Tests
         db.SaveChanges();
         //When GET is called
         var result = await client.GetAsync("/Vehicle");
-        var body = JsonSerializer.Deserialize<List<Vehicle>>(await result.Content.ReadAsStringAsync());
+        var body = JsonSerializer.Deserialize<List<Vehicle>>(await result.Content.ReadAsStringAsync(), 
+        new JsonSerializerOptions{PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
         //Then return only 20 vehicles
         body.Count().Should().Be(20);
         db.Database.EnsureDeleted();
