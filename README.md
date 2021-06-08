@@ -1,5 +1,7 @@
 ﻿# Team 2 .NET service
 
+[![.NET Tests](https://github.com/Tech-Student-Labs/lti-car-api-2/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Tech-Student-Labs/lti-car-api-2/actions/workflows/dotnet.yml)
+
 Backend for hosting Car Dealership Application
 
 **Requirements**:
