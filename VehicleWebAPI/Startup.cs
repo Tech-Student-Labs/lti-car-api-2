@@ -34,7 +34,7 @@ namespace VehicleWebAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "VehicleDatabase", Version = "v1"});
             });
-            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer("Server=localhost,1433;Database=Vehicle;User=sa;Password=SusPassword2!"));
+            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer("Server=database;Database=Vehicle;User=sa;Password=SusPassword2!"));
             services.AddScoped<IVehicleDatabaseService, VehicleDatabaseService>();
         }
 
