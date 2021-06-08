@@ -1,13 +1,13 @@
 services:
   webapi:
-    image: "rmuehler/vehicle-web-api"
+    build: .
     ports:
       - "443:443"
       - "80:80"
     depends_on:
       - database
   database:
-    image: "rmuehler/vehicle-database"
+    image: "mcr.microsoft.com/mssql/server"
     volumes:
         - sql-data:/var/opt/mssql/data 
     ports:
