@@ -48,7 +48,7 @@ namespace VehicleWebAPI.Services
         //LIST
             public List<Vehicle> GetAllVehicles()
         {
-            return _db.Vehicles.ToList();
+            return _db.Vehicles.Take(20).ToList();
         }
     }
 }
