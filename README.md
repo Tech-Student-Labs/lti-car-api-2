@@ -24,7 +24,7 @@ To run the WebAPI + Database + UI
 
 From the root directory:
 
-`docker-build compose`
+`docker-compose build`
 
 ` docker compose up `
 
