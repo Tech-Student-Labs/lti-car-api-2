@@ -1,0 +1,21 @@
+name: Publish Docker image
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+      branches: [ main ]
+jobs:
+  push_to_registry:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Build the stack
+        run: docker-compose up -d
+      - name: Test WebAPI container is up
+        run: docker run --network container:webapi appropriate/curl -s --retry 10 --retry-connrefused http://localhost:3000/
+      - name: Test Database is up
+        run: docker run --network container:database appropriate/curl -s --retry 10 --retry-connrefused http://localhost:1433/
+
+        
