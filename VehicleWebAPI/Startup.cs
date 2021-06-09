@@ -56,8 +56,6 @@ namespace VehicleWebAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "VehicleDatabase v1"));
             }
 
-
-
             app.UseHttpsRedirection();
 
             app.UseRouting();
