@@ -268,7 +268,7 @@ namespace VehicleTests.E2E_Tests
     }
 
     [Fact]
-    public async Task Should_ReturnNumOfVehicles_WhenCreatingVehicle_AndManyVehiclesExist()
+    public async Task Should_AddVehicleToDatabase_WhenPostRequestIsMade()
     {
       //   GIVEN the service is running and there are many vehicles in vehicle list
       var testServer = new TestServer(hostBuilder);
