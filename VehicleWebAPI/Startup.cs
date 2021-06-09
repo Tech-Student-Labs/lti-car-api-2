@@ -33,7 +33,9 @@ namespace VehicleWebAPI
             //Allow localhost in CORS
             services.AddCors(options => {
                 options.AddDefaultPolicy(builder => {
-                    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
+                    builder.WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
                 });
             });
 
