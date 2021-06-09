@@ -71,27 +71,24 @@ namespace VehicleTests.E2E_Tests
             var testServer = new TestServer(hostBuilder(Guid.NewGuid().ToString()));
             var client = testServer.CreateClient();
             var db = testServer.Services.GetRequiredService<DatabaseContext>();
-            db.Add(new Vehicle
+            var vehicle = new Vehicle
             {
                 Id = 1,
                 VIN = "4Y1SL65848Z411439", Make = "Toyota", Model = "Corolla", Year = "1997", Miles = 145000,
                 Color = "Silver", SellingPrice = 2000, Status = Vehicle.StatusCode.Inventory, UserId = 1
-            });
-            db.Add(new InventoryVehicle {Id = 1, VehicleId = 1, Price = 3000});
+            };
+            var inventoryVehicle = new InventoryVehicle {Id = 1, VehicleId = 1, Price = 3000, Vehicle = vehicle};
+            db.Add(inventoryVehicle);
             db.SaveChanges();
 
             // WHEN
             var response = await client.GetAsync("/Inventory/1");
             var content = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<object>(content,
+            var result = JsonSerializer.Deserialize<InventoryVehicle>(content,
                 new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
-            //THEN return 404
-
-            result.Should().BeEquivalentTo(new {
-                Id = 1,
-                VIN = "4Y1SL65848Z411439", Make = "Toyota", Model = "Corolla", Year = "1997", Miles = 145000,
-                Color = "Silver", SellingPrice = 2000, Status = Vehicle.StatusCode.Inventory, UserId = 1, Price = 3000
-            });
+            
+            //THEN inventoryVehicle should be returned
+            result.Should().BeEquivalentTo(inventoryVehicle);
         }
     }
 }
