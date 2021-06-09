@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using VehicleWebAPI.Interfaces;
 
 namespace VehicleWebAPI.Models
@@ -12,8 +13,8 @@ namespace VehicleWebAPI.Models
         public string Year { get; set; }
         public int Miles { get; set; }
         public string Color { get; set; }
-        // [ForeignKey("VehicleImage")]
-        public ICollection<VehicleImage> VehicleImages { get; set; }
+        
+        public List<VehicleImage> VehicleImages { get; set; }
         public double SellingPrice { get; set; }
         public User User { get; set; }
         public int UserId { get; set; }

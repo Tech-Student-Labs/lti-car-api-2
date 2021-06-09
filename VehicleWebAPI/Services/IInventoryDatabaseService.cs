@@ -1,7 +1,11 @@
-﻿namespace VehicleWebAPI.Services
+﻿using System.Collections.Generic;
+using VehicleWebAPI.Models;
+
+namespace VehicleWebAPI.Services
 {
     public interface IInventoryDatabaseService
     {
-        public object GetInventoryVehicleById(int id);
+        public InventoryVehicle GetInventoryVehicleById(int id);
+        List<InventoryVehicle> GetInventoryVehicles();
     }
 }

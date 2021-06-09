@@ -6,8 +6,7 @@ namespace VehicleWebAPI.Models
     public class InventoryVehicle : IInventoryVehicle
     {
         public int Id { get; set; }
-
-        [ForeignKey("Vehicle")]
+        
         public int VehicleId { get; set; }
         public Vehicle Vehicle { get; set; }
         public double Price { get; set; }

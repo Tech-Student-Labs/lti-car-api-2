@@ -34,6 +34,8 @@ namespace VehicleWebAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("VehicleId");
+
                     b.ToTable("Inventory");
 
                     b.HasData(
@@ -212,6 +214,17 @@ namespace VehicleWebAPI.Migrations
                         });
                 });
 
+            modelBuilder.Entity("VehicleWebAPI.Models.InventoryVehicle", b =>
+                {
+                    b.HasOne("VehicleWebAPI.Models.Vehicle", "Vehicle")
+                        .WithMany()
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Vehicle");
+                });
+
             modelBuilder.Entity("VehicleWebAPI.Models.Vehicle", b =>
                 {
                     b.HasOne("VehicleWebAPI.Models.User", "User")
@@ -225,11 +238,13 @@ namespace VehicleWebAPI.Migrations
 
             modelBuilder.Entity("VehicleWebAPI.Models.VehicleImage", b =>
                 {
-                    b.HasOne("VehicleWebAPI.Models.Vehicle", null)
+                    b.HasOne("VehicleWebAPI.Models.Vehicle", "Vehicle")
                         .WithMany("VehicleImages")
                         .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Vehicle");
                 });
 
             modelBuilder.Entity("VehicleWebAPI.Models.User", b =>

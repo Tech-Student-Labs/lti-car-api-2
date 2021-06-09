@@ -6,8 +6,8 @@ namespace VehicleWebAPI.Models
     public class VehicleImage : IVehicleImage
     {
         public int Id { get; set; }
-        [ForeignKey("Vehicle")]
         public int VehicleId { get; set; }
+        public Vehicle Vehicle { get; set; }
         public byte[] ImageData { get; set; }
     }
 }

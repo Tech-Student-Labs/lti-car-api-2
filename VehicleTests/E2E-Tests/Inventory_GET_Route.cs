@@ -42,14 +42,14 @@ namespace VehicleTests.E2E_Tests
             var client = testServer.CreateClient();
 
             //WHEN GET is called
-            var result = await client.GetAsync("/Inventory");
+            var result = await client.GetAsync("/Inventory/1");
 
             //THEN return 404
             result.StatusCode.Should().Be(404);
         }
 
         [Fact]
-        public async Task Should_ReturnStatusCode200IfDBIsEmpty_WhenListVehiclesIsCalled()
+        public async Task Should_ReturnEmptyListIfDBIsEmpty_WhenListVehiclesIsCalled()
         {
             //Given
             var testServer = new TestServer(hostBuilder(Guid.NewGuid().ToString()));
@@ -59,9 +59,24 @@ namespace VehicleTests.E2E_Tests
             var response = await client.GetAsync("/Inventory");
             var content = await response.Content.ReadAsStringAsync();
             var result = JsonSerializer.Deserialize<List<object>>(content);
-            //THEN return 404
+            
+            //THEN should return an empty list
+            result.Count().Should().Be(0);
+        }
+        [Fact]
+        
+        public async Task Should_ReturnStatusCode200IfDBIsEmpty_WhenListVehiclesIsCalled()
+        {
+            //Given
+            var testServer = new TestServer(hostBuilder(Guid.NewGuid().ToString()));
+            var client = testServer.CreateClient();
+            var db = testServer.Services.GetRequiredService<DatabaseContext>();
 
-            result.Count.Should().Be(0);
+            // WHEN
+            var response = await client.GetAsync("/Inventory");
+
+            //Return error code 200, even when list empty
+            response.EnsureSuccessStatusCode();
         }
 
         [Fact]

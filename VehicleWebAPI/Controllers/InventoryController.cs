@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Reflection.Metadata.Ecma335;
+using Microsoft.AspNetCore.Mvc;
+using VehicleWebAPI.Models;
 using VehicleWebAPI.Services;
 
 namespace VehicleWebAPI.Controllers
@@ -14,10 +16,22 @@ namespace VehicleWebAPI.Controllers
             _service = service;
         }
 
+
+        [HttpGet]
+        public IActionResult GetListOfInventoryVehicles()
+        {
+            return Ok(_service.GetInventoryVehicles());
+        }
+
         [HttpGet("{id:int}")]
         public IActionResult GetInventoryVehicleById([FromRoute] int id)
         {
-            return Ok();
+            var vehicle = _service.GetInventoryVehicleById(id);
+            return vehicle switch
+            {
+                null => StatusCode(404),
+                _ => Ok(vehicle)
+            };
         }
         
     }
