@@ -37,6 +37,7 @@ namespace VehicleWebAPI
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer("Server=database;Database=Vehicle;User=sa;Password=SusPassword2!"));
             services.AddScoped<IVehicleDatabaseService, VehicleDatabaseService>();
             services.AddScoped<IInventoryDatabaseService, InventoryDatabaseService>();
+            services.AddScoped<IUserDatabaseService, UserDatabaseService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
