@@ -6,11 +6,12 @@ namespace VehicleDatabase.Data
 {
     public class DatabaseContext : DbContext
     {
+        public DatabaseContext() : base() {}
         public DatabaseContext(DbContextOptions options) : base(options) 
         {
             
         }
-        public DbSet<Vehicle> Vehicles { get; set; }
+        public virtual DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<InventoryVehicle> Inventory { get; set; }
         public DbSet<VehicleImage> VehicleImages { get; set; }
