@@ -1,6 +1,5 @@
 services:
   webapi:
-    image: "raaedprojectapi/webapi"
     build: .
     ports:
       - "443:443"
@@ -16,9 +15,5 @@ services:
     environment:
       SA_PASSWORD: "SusPassword2!"
       ACCEPT_EULA: "Y"
-  webui:
-    image: raaedk/vehicleui
-    ports:
-      - "80:80"
 volumes:
   sql-data:

@@ -29,6 +29,14 @@ namespace VehicleWebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            //Allow localhost in CORS
+            services.AddCors(options => {
+                options.AddDefaultPolicy(builder => {
+                    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
+                });
+            });
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -47,6 +55,8 @@ namespace VehicleWebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "VehicleDatabase v1"));
             }
+
+
 
             app.UseHttpsRedirection();
 
