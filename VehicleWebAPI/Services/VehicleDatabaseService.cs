@@ -26,8 +26,16 @@ namespace VehicleWebAPI.Services
       || vehicle.SellingPrice < 0
       || vehicle.Status < 0
       || vehicle.UserId < 0) return 0;
-      _db.Add(vehicle);
-      _db.SaveChanges();
+      if (_db.Vehicles.FirstOrDefault(t => t.VIN == vehicle.VIN) != null) return 0;
+      try
+      {
+        _db.Add(vehicle);
+        _db.SaveChanges();
+      }
+      catch (System.ArgumentException)
+      {
+        return 0;
+      }
       return 1;
     }
 

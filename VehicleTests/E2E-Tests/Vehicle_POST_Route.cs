@@ -55,11 +55,11 @@ namespace VehicleTests.E2E_Tests
       StringContent query = new StringContent(clean, Encoding.UTF8, "application/json");
 
       // WHEN a POST request is submitted to the vehicle db 
-      var result = await client.PostAsync("/vehicle", query);
+      var response = await client.PostAsync("/vehicle", query);
       db.SaveChanges();
 
       // THEN the response body should return a 201 code
-      result.StatusCode.Should().Be(201);
+      response.StatusCode.Should().Be(201);
       db.Database.EnsureDeleted();
     }
 
@@ -137,7 +137,6 @@ namespace VehicleTests.E2E_Tests
       // WHEN a POST request is submitted to the vehicle db
       await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
       var getResponse = await client.GetAsync("/vehicle");
-      var result = await JsonSerializer.DeserializeAsync<List<Vehicle>>(getResponse.Content.ReadAsStream());
 
       // THEN the response body should return a 201 code
       getResponse.StatusCode.Should().Be(200);
@@ -279,7 +278,6 @@ namespace VehicleTests.E2E_Tests
       // WHEN a POST request is submitted to the vehicle db 
       await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
       var getResponse = await client.GetAsync("/vehicle");
-      var result = await JsonSerializer.DeserializeAsync<List<Vehicle>>(getResponse.Content.ReadAsStream());
 
       //   THEN the response body should return the count of vehicles in db
       getResponse.StatusCode.Should().Be(200);
@@ -357,18 +355,6 @@ namespace VehicleTests.E2E_Tests
         Status = Vehicle.StatusCode.Pending,
         UserId = 1
       });
-      db.Add(new Vehicle
-      {
-        VIN = "YU1SL658486123463",
-        Make = "Mitsubishi",
-        Model = "Eclipse",
-        Year = "2005",
-        Miles = 75000,
-        Color = "Purple",
-        SellingPrice = 6000,
-        Status = Vehicle.StatusCode.Sold,
-        UserId = 1
-      });
       db.SaveChanges();
 
       // WHEN a POST request is submitted to the vehicle db 
@@ -377,7 +363,7 @@ namespace VehicleTests.E2E_Tests
       var result = await JsonSerializer.DeserializeAsync<List<Vehicle>>(getResponse.Content.ReadAsStream());
 
       //   THEN the response body should return the count of vehicles in db
-      result.Count().Should().Be(6);
+      result.Count().Should().Be(5);
       await db.Database.EnsureDeletedAsync();
     }
 
@@ -399,104 +385,102 @@ namespace VehicleTests.E2E_Tests
       //When
       var postResponse = await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
       var getResponse = await client.GetAsync("/vehicle");
-      var result = await JsonSerializer.DeserializeAsync<List<Vehicle>>(getResponse.Content.ReadAsStream());
 
       //Then the response body should return invalid
       postResponse.StatusCode.Should().Be(400);
       await db.Database.EnsureDeletedAsync();
     }
 
-    // [Fact]
-    // public async Task Should_ReturnInvalid_WhenAddingAVehicleWithExistingId()
-    // {
-    //   //Given the service is running and there are no vehicles in vehicle list
-    //   var testServer = new TestServer(hostBuilder);
-    //   var client = testServer.CreateClient();
-    //   var db = testServer.Services.GetRequiredService<DatabaseContext>();
-    //   await db.Database.EnsureDeletedAsync();
+    [Fact]
+    public async Task Should_ReturnInvalid_WhenAddingAVehicleWithExistingId()
+    {
+      //Given the service is running and there are no vehicles in vehicle list
+      var testServer = new TestServer(hostBuilder);
+      var client = testServer.CreateClient();
+      var db = testServer.Services.GetRequiredService<DatabaseContext>();
+      await db.Database.EnsureDeletedAsync();
 
-    //   var vehicleToAdd = new Vehicle
-    //   {
-    //     Id = 1,
-    //     VIN = "YU1SL658486123463",
-    //     Make = "Mitsubishi",
-    //     Model = "Eclipse",
-    //     Year = "2005",
-    //     Miles = 75000,
-    //     Color = "Purple",
-    //     SellingPrice = 6000,
-    //     Status = Vehicle.StatusCode.Sold,
-    //     UserId = 1
-    //   };
+      var vehicleToAdd = new Vehicle
+      {
+        Id = 1,
+        VIN = "YU1SL658486123463",
+        Make = "Mitsubishi",
+        Model = "Eclipse",
+        Year = "2005",
+        Miles = 75000,
+        Color = "Purple",
+        SellingPrice = 6000,
+        Status = Vehicle.StatusCode.Sold,
+        UserId = 1
+      };
 
-    //   db.Add(new Vehicle
-    //   {
-    //     Id = 1,
-    //     VIN = "YU1SL658486123463",
-    //     Make = "Mitsubishi",
-    //     Model = "Eclipse",
-    //     Year = "2005",
-    //     Miles = 75000,
-    //     Color = "Purple",
-    //     SellingPrice = 6000,
-    //     Status = Vehicle.StatusCode.Sold,
-    //     UserId = 1
-    //   });
+      db.Add(new Vehicle
+      {
+        Id = 1,
+        VIN = "YU1SL658486123463",
+        Make = "Mitsubishi",
+        Model = "Eclipse",
+        Year = "2005",
+        Miles = 75000,
+        Color = "Purple",
+        SellingPrice = 6000,
+        Status = Vehicle.StatusCode.Sold,
+        UserId = 1
+      });
+      db.SaveChanges();
 
-    //   //When
-    //   await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
-    //   var getResponse = await client.GetAsync("/vehicle");
-    //   var result = await JsonSerializer.DeserializeAsync<List<Vehicle>>(getResponse.Content.ReadAsStream());
+      //When
+      var postResponse = await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
+      var getResponse = await client.GetAsync("/vehicle");
 
-    //   //Then the response body should return invalid
-    //   getResponse.StatusCode.Should().Be(404);
-    //   await db.Database.EnsureDeletedAsync();
-    // }
+      //Then the response body should return invalid
+      postResponse.StatusCode.Should().Be(400);
+      await db.Database.EnsureDeletedAsync();
+    }
 
-    // [Fact]
-    // public async Task Should_ReturnInvalid_WhenAddingAVehicleWithExistingVIN()
-    // {
-    //   //Given the service is running and there are no vehicles in vehicle list
-    //   var testServer = new TestServer(hostBuilder);
-    //   var client = testServer.CreateClient();
-    //   var db = testServer.Services.GetRequiredService<DatabaseContext>();
-    //   await db.Database.EnsureDeletedAsync();
+    [Fact]
+    public async Task Should_ReturnInvalid_WhenAddingAVehicleWithExistingVIN()
+    {
+      //Given the service is running and there are no vehicles in vehicle list
+      var testServer = new TestServer(hostBuilder);
+      var client = testServer.CreateClient();
+      var db = testServer.Services.GetRequiredService<DatabaseContext>();
+      await db.Database.EnsureDeletedAsync();
 
-    //   var vehicleToAdd = new Vehicle
-    //   {
-    //     VIN = "5Z1SL39746U411411",
-    //     Make = "Honda",
-    //     Model = "Civic",
-    //     Year = "1997",
-    //     Miles = 145000,
-    //     Color = "Black",
-    //     SellingPrice = 3000,
-    //     Status = Vehicle.StatusCode.Inventory,
-    //     UserId = 1
-    //   };
+      var vehicleToAdd = new Vehicle
+      {
+        VIN = "5Z1SL39746U411411",
+        Make = "Honda",
+        Model = "Civic",
+        Year = "1997",
+        Miles = 145000,
+        Color = "Black",
+        SellingPrice = 3000,
+        Status = Vehicle.StatusCode.Inventory,
+        UserId = 1
+      };
 
-    //   db.Add(new Vehicle
-    //   {
-    //     VIN = "5Z1SL39746U411411",
-    //     Make = "Honda",
-    //     Model = "Civic",
-    //     Year = "1997",
-    //     Miles = 145000,
-    //     Color = "Black",
-    //     SellingPrice = 3000,
-    //     Status = Vehicle.StatusCode.Inventory,
-    //     UserId = 1
-    //   });
-    //   db.SaveChanges();
+      db.Add(new Vehicle
+      {
+        VIN = "5Z1SL39746U411411",
+        Make = "Honda",
+        Model = "Civic",
+        Year = "1997",
+        Miles = 145000,
+        Color = "Black",
+        SellingPrice = 3000,
+        Status = Vehicle.StatusCode.Inventory,
+        UserId = 1
+      });
+      db.SaveChanges();
 
-    //   //When
-    //   await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
-    //   var getResponse = await client.GetAsync("/vehicle");
-    //   var result = await JsonSerializer.DeserializeAsync<List<Vehicle>>(getResponse.Content.ReadAsStream());
+      //When
+      var postResponse = await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
+      var getResponse = await client.GetAsync("/vehicle");
 
-    //   //Then the response body should return invalid
-    //   getResponse.StatusCode.Should().Be(404);
-    //   await db.Database.EnsureDeletedAsync();
-    // }
+      //Then the response body should return invalid
+      postResponse.StatusCode.Should().Be(400);
+      await db.Database.EnsureDeletedAsync();
+    }
   }
 }

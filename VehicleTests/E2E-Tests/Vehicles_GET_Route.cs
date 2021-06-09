@@ -441,7 +441,7 @@ namespace VehicleTests.E2E_Tests
       var body = JsonSerializer.Deserialize<List<Vehicle>>(await result.Content.ReadAsStringAsync(),
       new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
       //Then return only 20 vehicles
-      // body.Count().Should().Be(20);
+      body.Count().Should().Be(20);
       db.Database.EnsureDeleted();
     }
   }
