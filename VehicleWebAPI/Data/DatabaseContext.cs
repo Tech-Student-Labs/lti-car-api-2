@@ -59,25 +59,20 @@ namespace VehicleDatabase.Data
                 }
             );
 
-            ;
-            // modelBuilder.Entity<Vehicle>().HasMany(x => x.VehicleImages);
-
             modelBuilder.Entity<User>().HasData(
                 new User {Id = 1, Authorization = User.AuthLevel.User, Name = "Robert Muehler"}
             );
-
+            
+            // modelBuilder.Entity<InventoryVehicle>().HasNoKey();
             modelBuilder.Entity<InventoryVehicle>().HasData(
                 new InventoryVehicle {Id = 1, VehicleId = 1, Price = 6000.00}
             );
 
-            // modelBuilder.Entity<InventoryVehicle>().HasOne(x => x.VehicleId);
-
+            // modelBuilder.Entity<VehicleImage>().HasNoKey();
             modelBuilder.Entity<VehicleImage>().HasData(
                 new VehicleImage {Id = 1, VehicleId = 1}
             );
-            
-            // modelBuilder.Entity<VehicleImage>().HasNoKey();
-
+        
             base.OnModelCreating(modelBuilder);
         }
     }

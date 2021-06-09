@@ -7,7 +7,7 @@ namespace VehicleTests
     public class VehicleImage_Test
     {
         [Fact]
-        public void Action_Should_When()
+        public void VehicleImage_ShouldBeInstantiated()
         {
             //Given
 
