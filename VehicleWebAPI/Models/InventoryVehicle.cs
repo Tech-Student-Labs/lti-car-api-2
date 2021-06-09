@@ -9,7 +9,8 @@ namespace VehicleWebAPI.Models
 
         [ForeignKey("Vehicle")]
         public int VehicleId { get; set; }
-
+        public Vehicle Vehicle { get; set; }
         public double Price { get; set; }
+        
     }
 }
