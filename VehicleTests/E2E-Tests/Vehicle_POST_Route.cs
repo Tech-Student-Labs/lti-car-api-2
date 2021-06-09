@@ -75,6 +75,7 @@ namespace VehicleTests.E2E_Tests
 
       var vehicle1 = new Vehicle
       {
+        Id = 1,
         VIN = "4Y1SL65848Z411439",
         Make = "Toyota",
         Model = "Corolla",
@@ -88,16 +89,14 @@ namespace VehicleTests.E2E_Tests
 
       // WHEN a POST request is submitted to the vehicle db
       await client.PostAsJsonAsync("/vehicle", vehicle1);
-      var response = await client.GetAsync("/vehicle");
-      var result = await JsonSerializer.DeserializeAsync<List<Vehicle>>(response.Content.ReadAsStream());
 
       // THEN the response body should return the amount of vehicles in db
-      result.Count().Should().Be(1);
+      db.Vehicles.FirstOrDefault(t => t.VIN == "4Y1SL65848Z411439").Should().BeEquivalentTo(vehicle1);
       await db.Database.EnsureDeletedAsync();
     }
 
     [Fact]
-    public async Task Should_Return201_WhenCreated_AndThereAlreadyExists1Todo()
+    public async Task Should_Return201_WhenCreated_AndThereAlreadyExists1Vehicle()
     {
       //   GIVEN the service is running and there is 1 vehicle in vehicle list
       var testServer = new TestServer(hostBuilder);
@@ -135,16 +134,15 @@ namespace VehicleTests.E2E_Tests
       db.SaveChanges();
 
       // WHEN a POST request is submitted to the vehicle db
-      await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
-      var getResponse = await client.GetAsync("/vehicle");
+      var postResponse = await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
 
       // THEN the response body should return a 201 code
-      getResponse.StatusCode.Should().Be(200);
+      postResponse.StatusCode.Should().Be(201);
       await db.Database.EnsureDeletedAsync();
     }
 
     [Fact]
-    public async Task Should_CreateVehicleInDB_WhenPostIsSubmittedAnd1TodoExists()
+    public async Task Should_CreateVehicleInDB_WhenPostIsSubmittedAnd1VehicleExists()
     {
       //   GIVEN the service is running and there is 1 vehicle in vehicle list
       var testServer = new TestServer(hostBuilder);
@@ -181,12 +179,10 @@ namespace VehicleTests.E2E_Tests
       db.SaveChanges();
 
       // WHEN a POST request is submitted to the vehicle db 
-      await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
-      var getResponse = await client.GetAsync("/vehicle");
-      var result = await JsonSerializer.DeserializeAsync<List<Vehicle>>(getResponse.Content.ReadAsStream());
+      var postResponse = await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
 
       //   THEN the response body should return the count of vehicles in db
-      result.Count().Should().Be(2);
+      db.Vehicles.ToList().Count.Should().Be(2);
       await db.Database.EnsureDeletedAsync();
     }
 
@@ -261,26 +257,13 @@ namespace VehicleTests.E2E_Tests
         Status = Vehicle.StatusCode.Pending,
         UserId = 1
       });
-      db.Add(new Vehicle
-      {
-        VIN = "YU1SL658486123463",
-        Make = "Mitsubishi",
-        Model = "Eclipse",
-        Year = "2005",
-        Miles = 75000,
-        Color = "Purple",
-        SellingPrice = 6000,
-        Status = Vehicle.StatusCode.Sold,
-        UserId = 1
-      });
       db.SaveChanges();
 
       // WHEN a POST request is submitted to the vehicle db 
-      await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
-      var getResponse = await client.GetAsync("/vehicle");
+      var postResponse = await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
 
       //   THEN the response body should return the count of vehicles in db
-      getResponse.StatusCode.Should().Be(200);
+      postResponse.StatusCode.Should().Be(201);
       await db.Database.EnsureDeletedAsync();
     }
 
@@ -359,11 +342,9 @@ namespace VehicleTests.E2E_Tests
 
       // WHEN a POST request is submitted to the vehicle db 
       await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
-      var getResponse = await client.GetAsync("/vehicle");
-      var result = await JsonSerializer.DeserializeAsync<List<Vehicle>>(getResponse.Content.ReadAsStream());
 
       //   THEN the response body should return the count of vehicles in db
-      result.Count().Should().Be(5);
+      db.Vehicles.ToList().Count.Should().Be(5);
       await db.Database.EnsureDeletedAsync();
     }
 
@@ -384,7 +365,6 @@ namespace VehicleTests.E2E_Tests
 
       //When
       var postResponse = await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
-      var getResponse = await client.GetAsync("/vehicle");
 
       //Then the response body should return invalid
       postResponse.StatusCode.Should().Be(400);
@@ -431,7 +411,6 @@ namespace VehicleTests.E2E_Tests
 
       //When
       var postResponse = await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
-      var getResponse = await client.GetAsync("/vehicle");
 
       //Then the response body should return invalid
       postResponse.StatusCode.Should().Be(400);
@@ -476,7 +455,6 @@ namespace VehicleTests.E2E_Tests
 
       //When
       var postResponse = await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
-      var getResponse = await client.GetAsync("/vehicle");
 
       //Then the response body should return invalid
       postResponse.StatusCode.Should().Be(400);
