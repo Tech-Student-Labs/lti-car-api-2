@@ -56,12 +56,5 @@ namespace VehicleWebAPI.Controllers
           : StatusCode(400, "Vehicle could not be deleted.");
     }
 
-    // [HttpPost]
-    // [Route("{id:int}")]
-    // public IActionResult CreateVehicleImage([FromRoute] int id, [FromForm] VehicleImageRequest vehicleImageRequest)
-    // {
-    //   return _service.CreateVehicleImages(id, vehicleImageRequest) == 1 ? Ok() : StatusCode(500);
-    // }
-    //
   }
 }
