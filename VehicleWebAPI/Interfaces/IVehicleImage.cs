@@ -9,6 +9,6 @@ namespace VehicleWebAPI.Interfaces
         int VehicleId { get; set; }
         
         // Vehicle Vehicle { get; set; }
-        byte[] ImageData { get; set; }
+        string ImageData { get; set; }
     }
 }

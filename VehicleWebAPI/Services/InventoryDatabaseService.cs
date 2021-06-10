@@ -14,17 +14,18 @@ namespace VehicleWebAPI.Services
         {
             _db = db;
         }
-        
-        
+
+
         public InventoryVehicle GetInventoryVehicleById(int id)
         {
-            var vehicle = _db.Inventory.Include(v => v.Vehicle).FirstOrDefault(v => v.VehicleId == id);
+            var vehicle = _db.Inventory.Include(v => v.Vehicle).Include(v => v.Vehicle.VehicleImages)
+                .FirstOrDefault(v => v.VehicleId == id);
             return vehicle;
         }
 
         public List<InventoryVehicle> GetInventoryVehicles()
         {
-            return _db.Inventory.Include(v => v.Vehicle).ToList();
+            return _db.Inventory.Include(v => v.Vehicle).Include(v => v.Vehicle.VehicleImages).ToList();
         }
     }
 }

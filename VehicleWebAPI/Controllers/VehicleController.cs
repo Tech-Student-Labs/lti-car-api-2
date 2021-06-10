@@ -31,10 +31,9 @@ namespace VehicleWebAPI.Controllers
     }
 
     [HttpPost]
-    public IActionResult CreateVehicle([FromForm] Vehicle vehicle)
+    public IActionResult CreateVehicle([FromBody] Vehicle vehicle)
     {
-      vehicle.VehicleImages = null;
-      return _service.CreateVehicle(vehicle, Request.Form.Files) == 1
+      return _service.CreateVehicle(vehicle) == 1
           ? Created($"/{vehicle.Id}"
               , new { vehicle.Id, vehicle.Make, vehicle.Model, vehicle.VIN })
           : StatusCode(400, "Vehicle could not be added. Try not including a vehicle id.");
@@ -56,5 +55,13 @@ namespace VehicleWebAPI.Controllers
           ? Ok()
           : StatusCode(400, "Vehicle could not be deleted.");
     }
+
+    // [HttpPost]
+    // [Route("{id:int}")]
+    // public IActionResult CreateVehicleImage([FromRoute] int id, [FromForm] VehicleImageRequest vehicleImageRequest)
+    // {
+    //   return _service.CreateVehicleImages(id, vehicleImageRequest) == 1 ? Ok() : StatusCode(500);
+    // }
+    //
   }
 }
