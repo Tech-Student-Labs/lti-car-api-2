@@ -7,7 +7,7 @@ namespace VehicleWebAPI.Models
     {
         public int Id { get; set; }
         public int VehicleId { get; set; }
-        public Vehicle Vehicle { get; set; }
-        public byte[] ImageData { get; set; }
+        // public Vehicle Vehicle { get; set; }
+        public string ImageData { get; set; }
     }
 }

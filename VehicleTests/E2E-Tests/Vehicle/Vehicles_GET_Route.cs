@@ -78,7 +78,8 @@ namespace VehicleTests.E2E_Tests
         Color = "Silver",
         SellingPrice = 2000,
         Status = Vehicle.StatusCode.Inventory,
-        UserId = 1
+        UserId = 1,
+        VehicleImages = new List<VehicleImage>()
       };
       db.Add(car);
       db.SaveChanges();
