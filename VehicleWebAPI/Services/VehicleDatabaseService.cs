@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 using VehicleDatabase.Data;
 using VehicleWebAPI.Models;
 
@@ -15,7 +17,7 @@ namespace VehicleWebAPI.Services
     }
 
     //CREATE
-    public int CreateVehicle(Vehicle vehicle)
+    public int CreateVehicle(Vehicle vehicle, IFormFileCollection images)
     {
       if (vehicle.VIN == null
       || vehicle.Make == null
@@ -29,6 +31,19 @@ namespace VehicleWebAPI.Services
       if (_db.Vehicles.FirstOrDefault(t => t.VIN == vehicle.VIN) != null) return 0;
       try
       {
+        foreach (var file in images)
+        {
+          VehicleImage img = new VehicleImage();
+
+          MemoryStream ms = new MemoryStream();
+          file.CopyTo(ms);
+          img.ImageData = ms.ToArray();
+
+          ms.Close();
+          ms.Dispose();
+
+          vehicle.VehicleImages.Add(img);
+        }
         _db.Add(vehicle);
         _db.SaveChanges();
       }
