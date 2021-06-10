@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Authorization;
 using VehicleWebAPI.Models;
 using VehicleWebAPI.Services;
 
@@ -17,7 +18,7 @@ namespace VehicleWebAPI.Controllers
         }
 
         // GET
-        [HttpGet]
+        [HttpGet, Authorize]
         public IActionResult GetAllVehicles()
         {
             return Ok(_service.GetAllVehicles());
