@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Net.Mime;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
@@ -72,6 +73,15 @@ namespace VehicleTests.E2E_Tests
       var client = testServer.CreateClient();
       var db = testServer.Services.GetRequiredService<DatabaseContext>();
       await db.Database.EnsureDeletedAsync();
+      
+      FileStream fs = File.Open( "../../../Resources/sedan-car-front-2.png", FileMode.Open);
+      MemoryStream ms = new MemoryStream();
+      fs.CopyTo(ms);
+      var vehicleImage = new VehicleImage {Id = 1, VehicleId = 1, ImageData = ms.ToArray(), };
+      ms.Close();
+      fs.Close();
+      await ms.DisposeAsync();
+      await fs.DisposeAsync();
 
       var vehicle1 = new Vehicle
       {
@@ -84,14 +94,14 @@ namespace VehicleTests.E2E_Tests
         Color = "Silver",
         SellingPrice = 2000,
         Status = Vehicle.StatusCode.Inventory,
-        UserId = 1
+        UserId = 1,
+        VehicleImages = new List<VehicleImage> {vehicleImage}
       };
-
       // WHEN a POST request is submitted to the vehicle db
       await client.PostAsJsonAsync("/vehicle", vehicle1);
 
       // THEN the response body should return the amount of vehicles in db
-      db.Vehicles.FirstOrDefault(t => t.VIN == "4Y1SL65848Z411439").Should().BeEquivalentTo(vehicle1);
+      db.Vehicles.Include(v => v.VehicleImages).FirstOrDefault(t => t.VIN == "4Y1SL65848Z411439").Should().BeEquivalentTo(vehicle1);
       await db.Database.EnsureDeletedAsync();
     }
 
@@ -460,5 +470,6 @@ namespace VehicleTests.E2E_Tests
       postResponse.StatusCode.Should().Be(400);
       await db.Database.EnsureDeletedAsync();
     }
+
   }
 }

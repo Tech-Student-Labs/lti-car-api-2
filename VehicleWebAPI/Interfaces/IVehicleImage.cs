@@ -8,7 +8,7 @@ namespace VehicleWebAPI.Interfaces
         int Id { get; set; }
         int VehicleId { get; set; }
         
-        Vehicle Vehicle { get; set; }
+        // Vehicle Vehicle { get; set; }
         byte[] ImageData { get; set; }
     }
 }
