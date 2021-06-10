@@ -35,8 +35,8 @@ namespace VehicleWebAPI.Controllers
         {
             return _service.CreateVehicle(vehicle) == 1
                 ? Created($"/{vehicle.Id}"
-                    , new {vehicle.Id, vehicle.Make, vehicle.Model, vehicle.VIN})
-                : StatusCode(400, "Vehicle could not be added. Try not including a vehicle id.");
+                    , vehicle)
+                : StatusCode(500, "Vehicle could not be added");
         }
 
         [HttpPut]

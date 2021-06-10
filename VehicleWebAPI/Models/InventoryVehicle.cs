@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using VehicleWebAPI.Interfaces;
 
 namespace VehicleWebAPI.Models
@@ -9,6 +10,7 @@ namespace VehicleWebAPI.Models
         
         public int VehicleId { get; set; }
         public Vehicle Vehicle { get; set; }
+        [Required]
         public double Price { get; set; }
         
     }
