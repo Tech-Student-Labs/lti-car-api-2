@@ -94,7 +94,7 @@ namespace VehicleTests.E2E_Tests
         }
 
         [Fact]
-        public async Task Should_ReturnNothing_WhenFailToMatchLoginToUser()
+        public async Task Should_ReturnNoContent_WhenFailToMatchLoginToUser()
         {
             //Given User exists in User Table
             var testServer = new TestServer(hostBuilder(Guid.NewGuid().ToString()));
