@@ -18,7 +18,7 @@ namespace VehicleWebAPI.Controllers
         }
 
         // GET
-        [HttpGet, Authorize]
+        [HttpGet]
         public IActionResult GetAllVehicles()
         {
             return Ok(_service.GetAllVehicles());
