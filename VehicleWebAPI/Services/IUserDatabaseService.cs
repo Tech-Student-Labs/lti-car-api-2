@@ -6,5 +6,6 @@ namespace VehicleWebAPI.Services
     public interface IUserDatabaseService
     {
         public List<User> GetAllUsers();
+        public User AddUser(User user);
     }
 }

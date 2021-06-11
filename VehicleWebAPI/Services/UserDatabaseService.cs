@@ -20,5 +20,13 @@ namespace VehicleWebAPI.Services
         {
             return _db.Users.ToList();
         }
+
+        public User AddUser(User user)
+        {
+            _db.Users.Add(user);
+            _db.SaveChanges();
+
+            return user;
+        }
     }
 }

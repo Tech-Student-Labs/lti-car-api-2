@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using VehicleWebAPI.Services;
+using VehicleWebAPI.Models;
 
 namespace VehicleWebAPI.Controllers
 {
@@ -21,9 +22,11 @@ namespace VehicleWebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult createUser()
+        public IActionResult createUser([FromBody] User user)
         {
-            return Ok();
+            var u = _userDatabaseService.AddUser(user);
+
+            return Created($"/user/{u.Id}", u);
         }
     }
 }

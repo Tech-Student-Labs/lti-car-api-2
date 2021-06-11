@@ -38,7 +38,7 @@ namespace VehicleTests.E2E_Tests
         }
         
         [Fact]
-        public async Task test2323()
+        public async Task PostRouteReturnsStatus200()
         {
             //Given the User db is empty
             var testServer = new TestServer(hostBuilder(Guid.NewGuid().ToString()));
@@ -50,7 +50,7 @@ namespace VehicleTests.E2E_Tests
             
             //When a list of users is requested by the api
 
-            var registration = JsonSerializer.Serialize(new User{UserName = "johndoe", Password = "def@123"});
+            var registration = JsonSerializer.Serialize(new User{UserName = "harambe", Password = "monke"});
             StringContent query = new StringContent(registration, Encoding.UTF8, "application/json");
 
             var response = await client.PostAsync("/User", query);
@@ -58,17 +58,80 @@ namespace VehicleTests.E2E_Tests
             db.SaveChanges();
 
             // THEN the response body should return a 200 code
-            response.StatusCode.Should().Be(200);
+            response.StatusCode.Should().Be(201);
 
             db.Database.EnsureDeleted();
-            
-            
-            // var response = await client.GetAsync("/User");
-            // var content = await response.Content.ReadAsStringAsync();
-            // var result = JsonSerializer.Deserialize<List<object>>(content);
+        }
 
-            //Then return an empty list
-            // result.Count.Should().Be(0);
+        [Fact]
+        public async Task PostRouteCreatesAUser()
+        {
+            //Given the User db is empty
+            var testServer = new TestServer(hostBuilder(Guid.NewGuid().ToString()));
+
+            var db = testServer.Services.GetRequiredService<DatabaseContext>();
+            db.Database.EnsureDeleted();
+
+            var client = testServer.CreateClient();
+            
+            //When a list of users is requested by the api
+
+            var monke = new User{Id = 1, UserName = "harambe", Password = "monke"};
+
+            var registration = JsonSerializer.Serialize(monke);
+            StringContent query = new StringContent(registration, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("/User", query);
+
+            db.SaveChanges();
+
+            // THEN the response body should return a 200 code
+            var user = db.Users.FirstOrDefault(user => user.UserName == "harambe");
+
+            user.Should().BeEquivalentTo(monke);
+
+            db.Database.EnsureDeleted();
+        }
+
+        [Fact]
+        public async Task PostRouteCreatesMultipleUsers()
+        {
+            //Given the User db is empty
+            var testServer = new TestServer(hostBuilder(Guid.NewGuid().ToString()));
+
+            var db = testServer.Services.GetRequiredService<DatabaseContext>();
+            
+            await db.Database.EnsureDeletedAsync();
+
+            var client = testServer.CreateClient();
+            
+            //When a list of users is requested by the api
+
+            const string name1 = "harambe";
+            const string name2 = "amongus";
+
+            var monke = new User{Id = 1, UserName = name1, Password = "monke"};
+            var among = new User{Id = 2, UserName = name2, Password = "sus"};
+
+            var registration = JsonSerializer.Serialize(monke);
+            StringContent query = new StringContent(registration, Encoding.UTF8, "application/json");
+
+            var registration2 = JsonSerializer.Serialize(among);
+            StringContent query2 = new StringContent(registration2, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("/User", query);
+            var response2 = await client.PostAsync("/User", query2);
+
+            db.SaveChanges();
+
+            // THEN the response body should return a 200 code
+            var user = db.Users.FirstOrDefault(user => user.UserName == name1);
+            var user2 = db.Users.FirstOrDefault(user => user.UserName == name2);
+
+            user.Should().BeEquivalentTo(monke);
+            user2.Should().BeEquivalentTo(among);
+
+            db.Database.EnsureDeleted();
         }
         
         
