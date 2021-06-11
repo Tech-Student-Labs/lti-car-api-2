@@ -23,7 +23,7 @@ namespace VehicleTests.Unit_Tests
                     Vehicle = new Vehicle 
                     {
                         Id = 1,
-                        VIN = "4Y1SL65848Z411439", Make = "Toyota", Model = "Corolla", Year = "1997", Miles = 145000,
+                        VIN = "4Y1SL65848Z411439", Make = "Toyota", Model = "Corolla", Year = 1997, Miles = 145000,
                         Color = "Silver", SellingPrice = 2000, Status = Vehicle.StatusCode.Inventory, UserId = 1 
                     },
                     Price = 3000
@@ -35,7 +35,7 @@ namespace VehicleTests.Unit_Tests
                     Vehicle = new Vehicle
                     {
                         Id = 2,
-                        VIN = "5Z1SL39746U411411", Make = "Honda", Model = "Civic", Year = "1997", Miles = 145000,
+                        VIN = "5Z1SL39746U411411", Make = "Honda", Model = "Civic", Year = 1997, Miles = 145000,
                         Color = "Black", SellingPrice = 3000, Status = Vehicle.StatusCode.Inventory, UserId = 1
                     },
                     Price = 3800
@@ -47,7 +47,7 @@ namespace VehicleTests.Unit_Tests
                     Vehicle = new Vehicle
                     {
                         Id = 3,
-                        VIN = "7T1SL646726411440", Make = "Subaru", Model = "Impreza", Year = "2005", Miles = 175000,
+                        VIN = "7T1SL646726411440", Make = "Subaru", Model = "Impreza", Year = 2005, Miles = 175000,
                         Color = "Blue", SellingPrice = 4000, Status = Vehicle.StatusCode.Inventory, UserId = 1
                     },
                     Price = 5200
