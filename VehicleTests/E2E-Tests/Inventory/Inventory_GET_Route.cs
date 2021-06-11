@@ -89,7 +89,7 @@ namespace VehicleTests.E2E_Tests
             var vehicle = new Vehicle
             {
                 Id = 1,
-                VIN = "4Y1SL65848Z411439", Make = "Toyota", Model = "Corolla", Year = "1997", Miles = 145000,
+                VIN = "4Y1SL65848Z411439", Make = "Toyota", Model = "Corolla", Year = 1997, Miles = 145000,
                 Color = "Silver", SellingPrice = 2000, Status = Vehicle.StatusCode.Inventory, UserId = 1,
                 VehicleImages = new List<VehicleImage>()
             };

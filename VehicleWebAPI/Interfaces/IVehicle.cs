@@ -9,7 +9,7 @@ namespace VehicleWebAPI.Interfaces
         string VIN { get; set; }
         string Make { get; set; }
         string Model { get; set; }
-        string Year { get; set; }
+        int Year { get; set; }
         int Miles { get; set; }
         string Color { get; set; }
         List<VehicleImage> VehicleImages { get; set; }
