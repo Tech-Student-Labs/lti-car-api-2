@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using VehicleWebAPI.Services;
 
 namespace VehicleWebAPI.Controllers
@@ -18,6 +19,12 @@ namespace VehicleWebAPI.Controllers
         public IActionResult GetAllUsers()
         {
             return Ok(_userDatabaseService.GetAllUsers());
+        }
+
+        [HttpPost]
+        public IActionResult createUser()
+        {
+            return Ok();
         }
     }
 }

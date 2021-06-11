@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using VehicleWebAPI.Models;
 
 [Route("api/auth")]
 [ApiController]
@@ -12,7 +13,7 @@ public class AuthController : ControllerBase
 {
     // GET api/values
     [HttpPost, Route("login")]
-    public IActionResult Login([FromBody]LoginModel user)
+    public IActionResult Login([FromBody]User user)
     {
         if (user == null)
         {

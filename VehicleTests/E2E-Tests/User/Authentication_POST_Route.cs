@@ -50,7 +50,7 @@ namespace VehicleTests.E2E_Tests
             var client = testServer.CreateClient();
 
             //WHEN POST request is made with correct username/password for User
-            var login = JsonSerializer.Serialize(new LoginModel{UserName = "johndoe", Password = "def@123"});
+            var login = JsonSerializer.Serialize(new User{UserName = "johndoe", Password = "def@123"});
             StringContent query = new StringContent(login, Encoding.UTF8, "application/json");
             var result = await client.PostAsync("/api/auth/login", query);
 
@@ -66,7 +66,7 @@ namespace VehicleTests.E2E_Tests
             var client = testServer.CreateClient();
             
             //When POST request is made with correct username/password for User
-            var login = JsonSerializer.Serialize(new LoginModel{UserName = "johndoe", Password = "def@123"});
+            var login = JsonSerializer.Serialize(new User{UserName = "johndoe", Password = "def@123"});
             StringContent query = new StringContent(login, Encoding.UTF8, "application/json");
             var response = await client.PostAsync("/api/auth/login", query);
             var content = await response.Content.ReadAsStringAsync();
@@ -85,7 +85,7 @@ namespace VehicleTests.E2E_Tests
             var client = testServer.CreateClient();
         
             //When POST request is made with invalid username/password for User
-            var login = JsonSerializer.Serialize(new LoginModel{UserName = "invalid", Password = "entry"});
+            var login = JsonSerializer.Serialize(new User{UserName = "invalid", Password = "entry"});
             StringContent query = new StringContent(login, Encoding.UTF8, "application/json");
             var result = await client.PostAsync("/api/auth/login", query);
         
@@ -101,7 +101,7 @@ namespace VehicleTests.E2E_Tests
             var client = testServer.CreateClient();
             
             //When POST request is made with invalid username/password for User
-            var login = JsonSerializer.Serialize(new LoginModel{UserName = "invalid", Password = "entry"});
+            var login = JsonSerializer.Serialize(new User{UserName = "invalid", Password = "entry"});
             StringContent query = new StringContent(login, Encoding.UTF8, "application/json");
             var response = await client.PostAsync("/api/auth/login", query);
             var content = await response.Content.ReadAsStringAsync();
