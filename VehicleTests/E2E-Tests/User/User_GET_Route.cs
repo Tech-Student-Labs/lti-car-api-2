@@ -50,9 +50,22 @@ namespace VehicleTests.E2E_Tests
 
             //Then return an empty list
             result.Count.Should().Be(0);
+        }
 
+        [Fact]
+        public async Task Should_Properly_Login()
+        {
+            //Given the User db is empty
+            var testServer = new TestServer(hostBuilder(Guid.NewGuid().ToString()));
+            var client = testServer.CreateClient();
             
+            //When a list of users is requested by the api
+            var response = await client.GetAsync("/User");
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<List<object>>(content);
 
+            //Then return an empty list
+            result.Count.Should().Be(0);
         }
         
         

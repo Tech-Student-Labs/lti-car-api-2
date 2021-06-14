@@ -6,11 +6,18 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using VehicleWebAPI.Models;
+using VehicleWebAPI.Services;
 
 [Route("api/auth")]
 [ApiController]
 public class AuthController : ControllerBase
 {
+    private readonly IUserDatabaseService _service;
+
+    public AuthController(IUserDatabaseService service) {
+        _service = service;
+    }
+
     // GET api/values
     [HttpPost, Route("login")]
     public IActionResult Login([FromBody]User user)
