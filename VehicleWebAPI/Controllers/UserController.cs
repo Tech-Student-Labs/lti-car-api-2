@@ -24,14 +24,18 @@ namespace VehicleWebAPI.Controllers
         [HttpPost]
         public IActionResult createUser([FromBody] User user)
         {
-            var u = _userDatabaseService.AddUser(user);
-
-            if (u != null){
-                return Created($"/user/{u.Id}", u);
+            if (_userDatabaseService.EmailExists(user.Email)) {
+                return Conflict("User could not be added, email already in use.");
             }
-            else {
+
+            if (_userDatabaseService.UsernameExists(user.UserName)) {
                 return Conflict("User could not be added, username already in use.");
             }
+
+            var u = _userDatabaseService.AddUser(user);
+
+            return Created($"/user/{u.Id}", u);
+
         }
     }
 }

@@ -23,20 +23,19 @@ namespace VehicleWebAPI.Services
 
         public User AddUser(User user)
         {
-            if (!this.UsernameExists(user.UserName)) {
-                _db.Users.Add(user);
-                _db.SaveChanges();
-                return user;
-            }
-            else {
-                return null;
-            }
-
+            _db.Users.Add(user);
+            _db.SaveChanges();
+            return user;
         }
 
         public bool UsernameExists(string username) 
         {
             return _db.Users.Any(u => u.UserName == username);
+        }
+
+        public bool EmailExists(string email) 
+        {
+            return _db.Users.Any(u => u.Email == email);
         }
 
         public bool VerifyCredentials(User user)

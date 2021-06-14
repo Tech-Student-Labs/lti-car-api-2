@@ -9,5 +9,6 @@ namespace VehicleWebAPI.Services
         public User AddUser(User user);
         public bool UsernameExists(string username);
         public bool VerifyCredentials(User user);
+        public bool EmailExists(string email);
     }
 }

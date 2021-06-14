@@ -44,18 +44,18 @@ namespace VehicleTests.E2E_Tests
             var testServer = new TestServer(hostBuilder(Guid.NewGuid().ToString()));
 
             var db = testServer.Services.GetRequiredService<DatabaseContext>();
-            db.Database.EnsureDeleted();
+            await db.Database.EnsureDeletedAsync();
 
             var client = testServer.CreateClient();
             
             //When a list of users is requested by the api
 
-            var registration = JsonSerializer.Serialize(new User{UserName = "harambe", Password = "monke"});
+            var registration = JsonSerializer.Serialize(new User{Id = 1, Email = "4@test.com", UserName = "harambe", Password = "monke"});
             StringContent query = new StringContent(registration, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync("/User", query);
+            await db.SaveChangesAsync();
 
-            db.SaveChanges();
+            var response = await client.PostAsync("/User", query);
 
             // THEN the response body should return a 201 code
             response.StatusCode.Should().Be(201);
@@ -89,6 +89,7 @@ namespace VehicleTests.E2E_Tests
             var user = db.Users.FirstOrDefault(user => user.UserName == "harambe");
 
             user.Should().BeEquivalentTo(monke);
+            // response.Content.ReadAsStringAsync().Should().NotBeNull();
 
             db.Database.EnsureDeleted();
         }
@@ -110,8 +111,8 @@ namespace VehicleTests.E2E_Tests
             const string name1 = "harambe";
             const string name2 = "amongus";
 
-            var monke = new User{Id = 1, UserName = name1, Password = "monke"};
-            var among = new User{Id = 2, UserName = name2, Password = "sus"};
+            var monke = new User{Id = 1, Email = "harambe@cincinattiZoo.org", UserName = name1, Password = "monke"};
+            var among = new User{Id = 2, Email = "sus@vent.com", UserName = name2, Password = "sus"};
 
             var registration = JsonSerializer.Serialize(monke);
             StringContent query = new StringContent(registration, Encoding.UTF8, "application/json");
@@ -140,11 +141,11 @@ namespace VehicleTests.E2E_Tests
             var db = testServer.Services.GetRequiredService<DatabaseContext>(); 
             await db.Database.EnsureDeletedAsync();
             var client = testServer.CreateClient();
-            db.Users.Add(new User{UserName = "johndoe", Password = "def@123"});
+            db.Users.Add(new User{Email = "johndoe@test.com", UserName = "johndoe", Password = "def@123"});
             db.SaveChanges();
         
             //When a POST request is made with a username that already exists in the database
-            var user = new User{UserName = "johndoe", Password = "whatever"};
+            var user = new User{Email = "johndoe2@test.com", UserName = "johndoe", Password = "whatever"};
             StringContent query = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
 
             var response = await client.PostAsync("/User", query);
@@ -154,18 +155,40 @@ namespace VehicleTests.E2E_Tests
             result.Should().Be("User could not be added, username already in use.");
         }
 
-        public async Task ShouldReturnCode409_WhenUsernameAlreadyUsedInDatabse()
+        [Fact]
+        public async Task ShouldReturnCode409_WhenUsernameAlreadyUsedInDatabase()
         {
             //Given that a User already exists in the Users database
             var testServer = new TestServer(hostBuilder(Guid.NewGuid().ToString()));
             var db = testServer.Services.GetRequiredService<DatabaseContext>(); 
             await db.Database.EnsureDeletedAsync();
             var client = testServer.CreateClient();
-            db.Users.Add(new User{UserName = "johndoe", Password = "def@123"});
+            db.Users.Add(new User{Email = "test@test.com", UserName = "johndoe", Password = "def@123"});
             db.SaveChanges();
         
             //When a POST request is made with a username that already exists in the database
-            var user = new User{Id = 1, UserName = "johndoe", Password = "whatever"};
+            var user = new User{Id = 1, Email = "test2@test.com", UserName = "johndoe", Password = "whatever"};
+            StringContent query = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("/User", query);
+            //Then the reponse body should specify why the user was not added
+
+            response.StatusCode.Should().Be(409);
+        }
+
+        [Fact]
+        public async Task ShouldReturnCode409_WhenEmailAlreadyUsedInDatabase()
+        {
+            //Given that a User already exists in the Users database
+            var testServer = new TestServer(hostBuilder(Guid.NewGuid().ToString()));
+            var db = testServer.Services.GetRequiredService<DatabaseContext>(); 
+            await db.Database.EnsureDeletedAsync();
+            var client = testServer.CreateClient();
+            db.Users.Add(new User{UserName = "johndoe", Password = "def@123", Email = "john@doe.com"});
+            db.SaveChanges();
+        
+            //When a POST request is made with a username that already exists in the database
+            var user = new User{UserName = "robertsmith", Password = "whatever", Email = "john@doe.com"};
             StringContent query = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
 
             var response = await client.PostAsync("/User", query);
