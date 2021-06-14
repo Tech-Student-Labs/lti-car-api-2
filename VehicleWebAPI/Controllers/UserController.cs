@@ -26,7 +26,12 @@ namespace VehicleWebAPI.Controllers
         {
             var u = _userDatabaseService.AddUser(user);
 
-            return Created($"/user/{u.Id}", u);
+            if (u != null){
+                return Created($"/user/{u.Id}", u);
+            }
+            else {
+                return Conflict("User could not be added, username already in use.");
+            }
         }
     }
 }

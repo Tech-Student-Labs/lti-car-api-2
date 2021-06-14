@@ -23,13 +23,23 @@ namespace VehicleWebAPI.Services
 
         public User AddUser(User user)
         {
-            _db.Users.Add(user);
-            _db.SaveChanges();
+            if (!this.UsernameExists(user.UserName)) {
+                _db.Users.Add(user);
+                _db.SaveChanges();
+                return user;
+            }
+            else {
+                return null;
+            }
 
-            return user;
         }
 
-        public bool UserExists(User user)
+        public bool UsernameExists(string username) 
+        {
+            return _db.Users.Any(u => u.UserName == username);
+        }
+
+        public bool VerifyCredentials(User user)
         {
             return _db.Users.Any(u => u.UserName == user.UserName && u.Password == user.Password);
         }

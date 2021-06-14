@@ -38,7 +38,7 @@ namespace VehicleTests.E2E_Tests
         }
         
         [Fact]
-        public async Task PostRouteReturnsStatus200()
+        public async Task PostRouteReturnsStatus201_WhenUserCanBeAddedToDatabase()
         {
             //Given the User db is empty
             var testServer = new TestServer(hostBuilder(Guid.NewGuid().ToString()));
@@ -57,14 +57,14 @@ namespace VehicleTests.E2E_Tests
 
             db.SaveChanges();
 
-            // THEN the response body should return a 200 code
+            // THEN the response body should return a 201 code
             response.StatusCode.Should().Be(201);
 
             db.Database.EnsureDeleted();
         }
 
         [Fact]
-        public async Task PostRouteCreatesAUser()
+        public async Task PostRouteCreatesAUser_WhenUserCanBeAddedToDatabase()
         {
             //Given the User db is empty
             var testServer = new TestServer(hostBuilder(Guid.NewGuid().ToString()));
@@ -85,7 +85,7 @@ namespace VehicleTests.E2E_Tests
 
             db.SaveChanges();
 
-            // THEN the response body should return a 200 code
+            // THEN the database should now contain the user from the post request
             var user = db.Users.FirstOrDefault(user => user.UserName == "harambe");
 
             user.Should().BeEquivalentTo(monke);
@@ -94,7 +94,7 @@ namespace VehicleTests.E2E_Tests
         }
 
         [Fact]
-        public async Task PostRouteCreatesMultipleUsers()
+        public async Task PostRouteCreatesMultipleUsers_WhenAllUsersCanBeAddedToDatabase()
         {
             //Given the User db is empty
             var testServer = new TestServer(hostBuilder(Guid.NewGuid().ToString()));
@@ -122,9 +122,7 @@ namespace VehicleTests.E2E_Tests
             var response = await client.PostAsync("/User", query);
             var response2 = await client.PostAsync("/User", query2);
 
-            db.SaveChanges();
-
-            // THEN the response body should return a 200 code
+            // THEN the response body should return a 201 code
             var user = db.Users.FirstOrDefault(user => user.UserName == name1);
             var user2 = db.Users.FirstOrDefault(user => user.UserName == name2);
 
@@ -133,6 +131,90 @@ namespace VehicleTests.E2E_Tests
 
             db.Database.EnsureDeleted();
         }
+
+        [Fact]
+        public async Task ShouldReturnWhyUserWasNotAdded_WhenUsernameAlreadyUsedInDatabse()
+        {
+            //Given that a User already exists in the Users database
+            var testServer = new TestServer(hostBuilder(Guid.NewGuid().ToString()));
+            var db = testServer.Services.GetRequiredService<DatabaseContext>(); 
+            await db.Database.EnsureDeletedAsync();
+            var client = testServer.CreateClient();
+            db.Users.Add(new User{UserName = "johndoe", Password = "def@123"});
+            db.SaveChanges();
+        
+            //When a POST request is made with a username that already exists in the database
+            var user = new User{UserName = "johndoe", Password = "whatever"};
+            StringContent query = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("/User", query);
+            var result = await response.Content.ReadAsStringAsync();
+            //Then the reponse body should specify why the user was not added
+
+            result.Should().Be("User could not be added, username already in use.");
+        }
+
+        public async Task ShouldReturnCode409_WhenUsernameAlreadyUsedInDatabse()
+        {
+            //Given that a User already exists in the Users database
+            var testServer = new TestServer(hostBuilder(Guid.NewGuid().ToString()));
+            var db = testServer.Services.GetRequiredService<DatabaseContext>(); 
+            await db.Database.EnsureDeletedAsync();
+            var client = testServer.CreateClient();
+            db.Users.Add(new User{UserName = "johndoe", Password = "def@123"});
+            db.SaveChanges();
+        
+            //When a POST request is made with a username that already exists in the database
+            var user = new User{Id = 1, UserName = "johndoe", Password = "whatever"};
+            StringContent query = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("/User", query);
+            //Then the reponse body should specify why the user was not added
+
+            response.StatusCode.Should().Be(409);
+        }
+
+        // [Fact]
+        // public async Task ShouldReturnWhyUserWasNotAdded_WhenUsernameAlreadyUsedInDatabse()
+        // {
+        //     //Given that a User already exists in the Users database
+        //     var testServer = new TestServer(hostBuilder(Guid.NewGuid().ToString()));
+        //     var db = testServer.Services.GetRequiredService<DatabaseContext>(); 
+        //     await db.Database.EnsureDeletedAsync();
+        //     var client = testServer.CreateClient();
+        //     db.Users.Add(new User{UserName = "johndoe", Password = "def@123"});
+        //     db.SaveChanges();
+        
+        //     //When a POST request is made with a username that already exists in the database
+        //     var user = new User{UserName = "johndoe", Password = "whatever"};
+        //     StringContent query = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
+
+        //     var response = await client.PostAsync("/User", query);
+        //     var result = await response.Content.ReadAsStringAsync();
+        //     //Then the reponse body should specify why the user was not added
+
+        //     result.Should().Be("User could not be added, username already in use.");
+        // }
+
+        // public async Task ShouldReturnCode409_WhenUsernameAlreadyUsedInDatabse()
+        // {
+        //     //Given that a User already exists in the Users database
+        //     var testServer = new TestServer(hostBuilder(Guid.NewGuid().ToString()));
+        //     var db = testServer.Services.GetRequiredService<DatabaseContext>(); 
+        //     await db.Database.EnsureDeletedAsync();
+        //     var client = testServer.CreateClient();
+        //     db.Users.Add(new User{UserName = "johndoe", Password = "def@123"});
+        //     db.SaveChanges();
+        
+        //     //When a POST request is made with a username that already exists in the database
+        //     var user = new User{Id = 1, UserName = "johndoe", Password = "whatever"};
+        //     StringContent query = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
+
+        //     var response = await client.PostAsync("/User", query);
+        //     //Then the reponse body should specify why the user was not added
+
+        //     response.StatusCode.Should().Be(409);
+        // }
         
         
     }

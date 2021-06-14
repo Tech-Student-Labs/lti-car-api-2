@@ -29,7 +29,7 @@ public class AuthController : ControllerBase
 
 
         //if (user.UserName == "johndoe" && user.Password == "def@123")
-        if (_service.UserExists(user))
+        if (_service.VerifyCredentials(user))
         {
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
