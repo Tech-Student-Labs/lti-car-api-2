@@ -25,7 +25,6 @@ namespace VehicleTests.E2E_Tests
 
     public class AuthenticationPostRoute
     {
-
         private class TokenHolder{
             public string Token { get; set; }
         }
@@ -117,27 +116,5 @@ namespace VehicleTests.E2E_Tests
             //Then Response should return null for the Token
             result.Token.Should().BeNull();
         }
-
-        // [Fact]
-        // public async Task ShouldAllowLoginForAUser()
-        // {
-        //     //Given User exists in User Table
-        //     var testServer = new TestServer(hostBuilder(Guid.NewGuid().ToString()));
-        //     var client = testServer.CreateClient();
-        //      DatabaseContext db = testServer.Services.GetRequiredService<DatabaseContext>();
-        //     db.Users.Add(new User{UserName = "johndoe", Password = "def@123"});
-            
-        //     //When POST request is made with correct username/password for User
-        //     var login = JsonSerializer.Serialize(new User{UserName = "harambe", Password = "monke"});
-        //     StringContent query = new StringContent(login, Encoding.UTF8, "application/json");
-        //     var response = await client.PostAsync("/api/auth/login", query);
-        //     var content = await response.Content.ReadAsStringAsync();
-        //     var result = JsonSerializer.Deserialize<TokenHolder>(content,
-        //         new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
-            
-        //     //Then Response should return the JWT token
-        //     result.Token.Length.Should().BeGreaterThan(0);
-        // }
-
     }
 }

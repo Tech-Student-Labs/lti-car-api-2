@@ -196,49 +196,5 @@ namespace VehicleTests.E2E_Tests
 
             response.StatusCode.Should().Be(409);
         }
-
-        // [Fact]
-        // public async Task ShouldReturnWhyUserWasNotAdded_WhenUsernameAlreadyUsedInDatabse()
-        // {
-        //     //Given that a User already exists in the Users database
-        //     var testServer = new TestServer(hostBuilder(Guid.NewGuid().ToString()));
-        //     var db = testServer.Services.GetRequiredService<DatabaseContext>(); 
-        //     await db.Database.EnsureDeletedAsync();
-        //     var client = testServer.CreateClient();
-        //     db.Users.Add(new User{UserName = "johndoe", Password = "def@123"});
-        //     db.SaveChanges();
-        
-        //     //When a POST request is made with a username that already exists in the database
-        //     var user = new User{UserName = "johndoe", Password = "whatever"};
-        //     StringContent query = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
-
-        //     var response = await client.PostAsync("/User", query);
-        //     var result = await response.Content.ReadAsStringAsync();
-        //     //Then the reponse body should specify why the user was not added
-
-        //     result.Should().Be("User could not be added, username already in use.");
-        // }
-
-        // public async Task ShouldReturnCode409_WhenUsernameAlreadyUsedInDatabse()
-        // {
-        //     //Given that a User already exists in the Users database
-        //     var testServer = new TestServer(hostBuilder(Guid.NewGuid().ToString()));
-        //     var db = testServer.Services.GetRequiredService<DatabaseContext>(); 
-        //     await db.Database.EnsureDeletedAsync();
-        //     var client = testServer.CreateClient();
-        //     db.Users.Add(new User{UserName = "johndoe", Password = "def@123"});
-        //     db.SaveChanges();
-        
-        //     //When a POST request is made with a username that already exists in the database
-        //     var user = new User{Id = 1, UserName = "johndoe", Password = "whatever"};
-        //     StringContent query = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
-
-        //     var response = await client.PostAsync("/User", query);
-        //     //Then the reponse body should specify why the user was not added
-
-        //     response.StatusCode.Should().Be(409);
-        // }
-        
-        
     }
 }
