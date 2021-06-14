@@ -27,7 +27,9 @@ public class AuthController : ControllerBase
             return BadRequest("Invalid client request");
         }
 
-        if (user.UserName == "johndoe" && user.Password == "def@123")
+
+        //if (user.UserName == "johndoe" && user.Password == "def@123")
+        if (_service.UserExists(user))
         {
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);

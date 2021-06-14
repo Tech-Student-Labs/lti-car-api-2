@@ -28,5 +28,10 @@ namespace VehicleWebAPI.Services
 
             return user;
         }
+
+        public bool UserExists(User user)
+        {
+            return _db.Users.Any(u => u.UserName == user.UserName && u.Password == user.Password);
+        }
     }
 }
