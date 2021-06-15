@@ -34,15 +34,15 @@ public class AuthController : ControllerBase
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
-            var tokeOptions = new JwtSecurityToken(
+            var tokenOptions = new JwtSecurityToken(
                 issuer: "https://localhost:5001",
                 audience: "https://localhost:5001",
-                claims: new List<Claim>(),
+                claims: new List<Claim>(){new Claim(JwtRegisteredClaimNames.Sub, user.UserName)},
                 expires: DateTime.Now.AddMinutes(20),
                 signingCredentials: signinCredentials
             );
 
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
             return Ok(new { Token = tokenString });
         }
         else

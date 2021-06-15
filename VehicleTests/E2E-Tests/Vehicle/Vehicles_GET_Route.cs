@@ -101,6 +101,7 @@ namespace VehicleTests.E2E_Tests
       var client = testServer.CreateClient();
       var db = testServer.Services.GetRequiredService<DatabaseContext>();
       db.Database.EnsureDeleted();
+      #region 
       db.Add(new Vehicle
       {
         Id = 1,
@@ -140,7 +141,7 @@ namespace VehicleTests.E2E_Tests
         Status = Vehicle.StatusCode.Inventory,
         UserId = 1
       });
-
+      #endregion
       db.SaveChanges();
       //WHEN GET is called
       var result = await client.GetAsync("/Vehicle");
@@ -153,7 +154,7 @@ namespace VehicleTests.E2E_Tests
     }
 
     [Fact]
-    public async Task should_return20()
+    public async Task should_return20vehiclesonly()
     {
       //Given That the service is running and there are more than 20 cars in the database
       var testServer = new TestServer(hostBuilder);
@@ -444,6 +445,20 @@ namespace VehicleTests.E2E_Tests
       //Then return only 20 vehicles
       body.Count().Should().Be(20);
       db.Database.EnsureDeleted();
+    }
+
+    [Fact]
+    public async Task Should_return200WhenGetByUsernameWithNothingInDatabase()
+    {
+    //Given that the service is running and there are no cars in the database
+    var testServer = new TestServer(hostBuilder);
+    var client = testServer.CreateClient();
+    var db = testServer.Services.GetRequiredService<DatabaseContext>();
+    db.Database.EnsureDeleted();
+    //When GET reqest is sent with a Username and rout parameter
+    var response = await client.GetAsync("/Vehicle/History");
+    //Then returns status 200
+    response.StatusCode.Should().Be(200);
     }
   }
 }
