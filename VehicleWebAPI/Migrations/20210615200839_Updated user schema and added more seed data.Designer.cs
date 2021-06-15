@@ -9,8 +9,8 @@ using VehicleDatabase.Data;
 namespace VehicleWebAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210615150736_MoreVehiclesToInventory")]
-    partial class MoreVehiclesToInventory
+    [Migration("20210615200839_Updated user schema and added more seed data")]
+    partial class Updateduserschemaandaddedmoreseeddata
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
