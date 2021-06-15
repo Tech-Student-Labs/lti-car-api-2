@@ -21,8 +21,6 @@ using Xunit;
 
 namespace VehicleTests.E2E_Tests
 {
-
-
     public class AuthenticationPostRoute
     {
         private class TokenHolder{

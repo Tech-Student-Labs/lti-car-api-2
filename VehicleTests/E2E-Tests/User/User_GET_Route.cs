@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,7 +16,6 @@ using Xunit;
 
 namespace VehicleTests.E2E_Tests
 {
-
     public class UserGetRoute
     {
         private IWebHostBuilder hostBuilder(string guid)
