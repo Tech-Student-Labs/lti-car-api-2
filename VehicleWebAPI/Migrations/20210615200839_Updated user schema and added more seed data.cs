@@ -2,16 +2,24 @@
 
 namespace VehicleWebAPI.Migrations
 {
-    public partial class MoreVehiclesToInventory : Migration
+    public partial class Updateduserschemaandaddedmoreseeddata : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.InsertData(
+                table: "Inventory",
+                columns: new[] { "Id", "Price", "VehicleId" },
+                values: new object[,]
+                {
+                    { 2, 21600.0, 2 },
+                    { 3, 35400.0, 3 }
+                });
+
             migrationBuilder.InsertData(
                 table: "Vehicles",
                 columns: new[] { "Id", "Color", "Make", "Miles", "Model", "SellingPrice", "Status", "UserId", "VIN", "Year" },
                 values: new object[,]
                 {
-                    { 11, "Silver", "Infiniti", 21500, "QX56", 15999.0, 1, 1, "5N3ZA0NE6AN906847", 2010 },
                     { 28, "White", "Dodge", 345531, "Ram Pickup 1500", 16512.0, 1, 1, "1D7HU18D54S747050", 2004 },
                     { 27, "Black", "Hyundai", 46333, "Santa Fe Sport", 54631.0, 1, 1, "5XYZUDLB7DG006717", 2013 },
                     { 26, "Blue", "Pontiac", 96841, "Sunfire", 36545.0, 1, 1, "1G2JB12F047226515", 2004 },
@@ -29,6 +37,12 @@ namespace VehicleWebAPI.Migrations
                     { 14, "Red", "Honda", 22000, "CRV", 6500.0, 1, 1, "5J6RE4H48BL023237", 2011 },
                     { 13, "Blue", "Mercedes Benz", 25000, "C240", 67000.0, 1, 1, "WDBAB23A6DB369209", 1983 },
                     { 12, "Black", "Toyota", 10000, "Corolla", 15550.0, 1, 1, "1NXBB02E9TZ393131", 1996 },
+                    { 11, "Silver", "Infiniti", 21500, "QX56", 15999.0, 1, 1, "5N3ZA0NE6AN906847", 2010 },
+                    { 10, "White", "Infiniti", 42000, "G37", 14200.0, 1, 1, "JNKCV64E78M131002", 2008 },
+                    { 9, "Beige", "Honda", 98000, "CRV", 7800.0, 1, 1, "5J6RM4H75CL059384", 2012 },
+                    { 8, "White", "Acura", 352000, "Integra", 2000.0, 1, 1, "JH4DA3341JS014654", 1988 },
+                    { 7, "Black", "Ford", 154000, "F250", 7400.0, 1, 1, "2FTHF25H6LCB36173", 1990 },
+                    { 6, "Blue", "Volkswagen", 15600, "Rabbit", 35000.0, 1, 1, "WVWAA71K08W201030", 2015 },
                     { 29, "Beige", "Jaguar", 15000, "S-Type", 2000000.0, 1, 1, "SAJDA41GXDPA26883", 1983 },
                     { 30, "White", "Ferrari", 5600, "F430", 500000.0, 1, 1, "ZFFEW59A190165924", 2009 }
                 });
@@ -38,28 +52,68 @@ namespace VehicleWebAPI.Migrations
                 columns: new[] { "Id", "Price", "VehicleId" },
                 values: new object[,]
                 {
-                    { 9, 15999.0, 11 },
+                    { 4, 35000.0, 6 },
                     { 23, 16512.0, 28 },
                     { 22, 54631.0, 27 },
                     { 21, 36545.0, 26 },
                     { 20, 4549.0, 23 },
                     { 19, 23186.0, 22 },
                     { 18, 16000.0, 21 },
-                    { 24, 2000000.0, 29 },
                     { 17, 52000.0, 20 },
+                    { 16, 35000.0, 19 },
                     { 15, 15000.0, 18 },
                     { 14, 11200.0, 17 },
                     { 13, 1500.0, 16 },
                     { 12, 6500.0, 14 },
                     { 11, 67000.0, 13 },
                     { 10, 15550.0, 12 },
-                    { 16, 35000.0, 19 },
+                    { 9, 15999.0, 11 },
+                    { 8, 14200.0, 10 },
+                    { 7, 7800.0, 9 },
+                    { 6, 2000.0, 8 },
+                    { 5, 7400.0, 7 },
+                    { 24, 2000000.0, 29 },
                     { 25, 500000.0, 30 }
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DeleteData(
+                table: "Inventory",
+                keyColumn: "Id",
+                keyValue: 2);
+
+            migrationBuilder.DeleteData(
+                table: "Inventory",
+                keyColumn: "Id",
+                keyValue: 3);
+
+            migrationBuilder.DeleteData(
+                table: "Inventory",
+                keyColumn: "Id",
+                keyValue: 4);
+
+            migrationBuilder.DeleteData(
+                table: "Inventory",
+                keyColumn: "Id",
+                keyValue: 5);
+
+            migrationBuilder.DeleteData(
+                table: "Inventory",
+                keyColumn: "Id",
+                keyValue: 6);
+
+            migrationBuilder.DeleteData(
+                table: "Inventory",
+                keyColumn: "Id",
+                keyValue: 7);
+
+            migrationBuilder.DeleteData(
+                table: "Inventory",
+                keyColumn: "Id",
+                keyValue: 8);
+
             migrationBuilder.DeleteData(
                 table: "Inventory",
                 keyColumn: "Id",
@@ -159,6 +213,31 @@ namespace VehicleWebAPI.Migrations
                 table: "Vehicles",
                 keyColumn: "Id",
                 keyValue: 25);
+
+            migrationBuilder.DeleteData(
+                table: "Vehicles",
+                keyColumn: "Id",
+                keyValue: 6);
+
+            migrationBuilder.DeleteData(
+                table: "Vehicles",
+                keyColumn: "Id",
+                keyValue: 7);
+
+            migrationBuilder.DeleteData(
+                table: "Vehicles",
+                keyColumn: "Id",
+                keyValue: 8);
+
+            migrationBuilder.DeleteData(
+                table: "Vehicles",
+                keyColumn: "Id",
+                keyValue: 9);
+
+            migrationBuilder.DeleteData(
+                table: "Vehicles",
+                keyColumn: "Id",
+                keyValue: 10);
 
             migrationBuilder.DeleteData(
                 table: "Vehicles",
