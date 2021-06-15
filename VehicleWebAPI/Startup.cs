@@ -39,19 +39,19 @@ namespace VehicleWebAPI
         opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
       })
-  .AddJwtBearer(options =>
-  {
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-      ValidateIssuer = true,
-      ValidateAudience = true,
-      ValidateLifetime = true,
-      ValidateIssuerSigningKey = true,
-      ValidIssuer = "https://localhost:5001",
-      ValidAudience = "https://localhost:5001",
-      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"))
-    };
-  });
+      .AddJwtBearer(options =>
+      {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+          ValidateIssuer = true,
+          ValidateAudience = true,
+          ValidateLifetime = true,
+          ValidateIssuerSigningKey = true,
+          ValidIssuer = "https://localhost:5001",
+          ValidAudience = "https://localhost:5001",
+          IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"))
+        };
+      });
 
       //Allow localhost in CORS
       services.AddCors(options =>
@@ -68,11 +68,12 @@ namespace VehicleWebAPI
       services.AddControllers();
       services.AddSwaggerGen(c =>
       {
-        c.SwaggerDoc("v1", new OpenApiInfo { Title = "VehicleDatabase", Version = "v1" });
+          c.SwaggerDoc("v1", new OpenApiInfo {Title = "VehicleDatabase", Version = "v1"});
       });
-      services.AddDbContext<DatabaseContext>(options => options.UseSqlServer("Server=localhost;Database=Vehicle;User=sa;Password=SusPassword2!"));
+      services.AddDbContext<DatabaseContext>(options => options.UseSqlServer("Server=database;Database=Vehicle;User=sa;Password=SusPassword2!"));
       services.AddScoped<IVehicleDatabaseService, VehicleDatabaseService>();
       services.AddScoped<IInventoryDatabaseService, InventoryDatabaseService>();
+      services.AddScoped<IUserDatabaseService, UserDatabaseService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
