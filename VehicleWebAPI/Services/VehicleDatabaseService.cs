@@ -76,5 +76,4 @@ namespace VehicleWebAPI.Services
             return _db.Vehicles.Where(v => v.User.UserName == username).Include(v => v.VehicleImages).Select(v => new ResponseVehicle{Id=v.Id, VIN=v.VIN, Make=v.Make, Model=v.Model, Year=v.Year, Miles=v.Miles, Color=v.Color, VehicleImages=v.VehicleImages, SellingPrice=v.SellingPrice, Status=v.Status}).ToList();
         }
     }
-  }
 }
