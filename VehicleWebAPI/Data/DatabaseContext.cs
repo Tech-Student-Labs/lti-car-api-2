@@ -8,14 +8,13 @@ namespace VehicleDatabase.Data
   {
     public DatabaseContext() : base() { }
     public DatabaseContext(DbContextOptions options) : base(options)
-    {
-
+    {       
+        
     }
     public virtual DbSet<Vehicle> Vehicles { get; set; }
-    public DbSet<User> Users { get; set; }
+    public virtual DbSet<User> Users { get; set; }
     public virtual DbSet<InventoryVehicle> Inventory { get; set; }
-    public DbSet<VehicleImage> VehicleImages { get; set; }
-
+    public virtual DbSet<VehicleImage> VehicleImages { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
