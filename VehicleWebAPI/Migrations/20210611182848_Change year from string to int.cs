@@ -2,7 +2,7 @@
 
 namespace VehicleWebAPI.Migrations
 {
-    public partial class UsersSchemaUpdate : Migration
+    public partial class Changeyearfromstringtoint : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
