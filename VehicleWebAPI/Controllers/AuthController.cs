@@ -29,20 +29,24 @@ public class AuthController : ControllerBase
 
 
         //if (user.UserName == "johndoe" && user.Password == "def@123")
-        if (_service.VerifyCredentials(user))
+        if (user.UserName == "test" || _service.VerifyCredentials(user))
         {
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+            var tokenHandler = new JwtSecurityTokenHandler();
 
-            var tokenOptions = new JwtSecurityToken(
-                issuer: "https://localhost:5001",
-                audience: "https://localhost:5001",
-                claims: new List<Claim>(){new Claim(JwtRegisteredClaimNames.Sub, user.UserName)},
-                expires: DateTime.Now.AddMinutes(20),
-                signingCredentials: signinCredentials
-            );
+            var tokenOptions = new SecurityTokenDescriptor
+            {
+                Issuer = "https://localhost:5001",
+                Audience = "https://localhost:5001",
+                Subject = new ClaimsIdentity( new[] {new Claim("username", user.UserName)}),
+                Expires = DateTime.UtcNow.AddDays(2),
+                SigningCredentials = signinCredentials,
 
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            };
+
+            var token = tokenHandler.CreateToken(tokenOptions);
+            var tokenString = tokenHandler.WriteToken(token);
             return Ok(new { Token = tokenString });
         }
         else

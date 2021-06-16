@@ -71,5 +71,10 @@ namespace VehicleWebAPI.Services
         {
             return _db.Vehicles.Include(v => v.VehicleImages).Take(20).ToList();
         }
+
+        public List<Vehicle> GetVehicleByUsername(string username)
+        {
+            return _db.Vehicles.Include(v => v.User).Where(v => v.User.UserName == username).Include(v => v.VehicleImages).ToList();
+        }
     }
 }

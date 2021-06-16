@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Authorization;
 using VehicleWebAPI.Models;
 using VehicleWebAPI.Services;
+using System.Linq;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Collections.Generic;
 
 namespace VehicleWebAPI.Controllers
 {
@@ -29,6 +33,16 @@ namespace VehicleWebAPI.Controllers
     public IActionResult GetVehicleById([FromRoute] int id)
     {
       return Ok(_service.ReadVehicleById(id));
+    }
+
+    [HttpGet]
+    [Route("History")]
+    [Authorize]
+    public IActionResult GetVehiclesByUser()
+    {
+      var identity = HttpContext.User.Identity as ClaimsIdentity;
+      var username = identity.Claims.FirstOrDefault(u => u.Type == "username").Value;
+      return Ok(_service.GetVehicleByUsername(username));
     }
 
     [HttpPost]

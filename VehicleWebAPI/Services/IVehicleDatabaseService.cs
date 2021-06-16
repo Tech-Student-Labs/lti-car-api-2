@@ -10,5 +10,7 @@ namespace VehicleWebAPI.Services
         int UpdateVehicle(Vehicle vehicle);
         int DeleteVehicleById(int id);
         List<Vehicle> GetAllVehicles();
+        List<Vehicle> GetVehicleByUsername(string username);
+
     }
 }
