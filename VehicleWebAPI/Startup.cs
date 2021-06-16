@@ -17,6 +17,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using VehicleDatabase.Data;
 using VehicleWebAPI.Services;
+using System.Text.Json.Serialization;
 
 namespace VehicleWebAPI
 {

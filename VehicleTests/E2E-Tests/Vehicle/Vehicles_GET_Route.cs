@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -28,6 +31,29 @@ namespace VehicleTests.E2E_Tests
         services.Remove(services.SingleOrDefault(s => s.ServiceType == typeof(DbContextOptions<DatabaseContext>)));
         services.AddDbContext<DatabaseContext>(options => options.UseInMemoryDatabase("vehicle"));
       });
+    
+    private class TokenHolder{
+      public string Token { get; set; }
+    }
+
+    public async Task<string> AppendJWTHeader(DatabaseContext db, HttpClient client, string username = "johndoe") {
+      db.Users.Add(new User{Email = "johndoe@test.com", UserName = username, Password = "def@123"});
+      db.SaveChanges();
+
+      //handle login for JWT Token
+      var user = new User{Email = "johndoe2@test.com", UserName = username, Password = "def@123"};
+      StringContent query = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
+
+      var loginResponse = await client.PostAsync("/api/auth/login", query);
+      var content = await loginResponse.Content.ReadAsStringAsync();
+
+      var result = JsonSerializer.Deserialize<TokenHolder>(content,
+        new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
+      
+      client.DefaultRequestHeaders.Add("Authorization", "Bearer " + result.Token);
+
+      return result.Token;
+    }
 
     [Fact]
     public async Task TestName()
@@ -101,6 +127,7 @@ namespace VehicleTests.E2E_Tests
       var client = testServer.CreateClient();
       var db = testServer.Services.GetRequiredService<DatabaseContext>();
       db.Database.EnsureDeleted();
+      #region 
       db.Add(new Vehicle
       {
         Id = 1,
@@ -140,7 +167,7 @@ namespace VehicleTests.E2E_Tests
         Status = Vehicle.StatusCode.Inventory,
         UserId = 1
       });
-
+      #endregion
       db.SaveChanges();
       //WHEN GET is called
       var result = await client.GetAsync("/Vehicle");
@@ -153,7 +180,7 @@ namespace VehicleTests.E2E_Tests
     }
 
     [Fact]
-    public async Task should_return20()
+    public async Task should_return20vehiclesonly()
     {
       //Given That the service is running and there are more than 20 cars in the database
       var testServer = new TestServer(hostBuilder);
@@ -444,6 +471,261 @@ namespace VehicleTests.E2E_Tests
       //Then return only 20 vehicles
       body.Count().Should().Be(20);
       db.Database.EnsureDeleted();
+    }
+
+    [Fact]
+    public async Task Should_return200WhenGetByUsernameWithNothingInDatabase()
+    {
+      //Given that the service is running and there are no cars in the database
+      var testServer = new TestServer(hostBuilder);
+      var client = testServer.CreateClient();
+      var db = testServer.Services.GetRequiredService<DatabaseContext>();
+      db.Database.EnsureDeleted();
+      await AppendJWTHeader(db, client);
+
+      //When GET reqest is sent with a Username and rout parameter
+      var response = await client.GetAsync("/Vehicle/History");
+      //Then returns status 200
+      response.StatusCode.Should().Be(200);
+    }
+
+    [Fact]
+    public async Task Should_Return_An_AuthorizedUsers_Vehicles()
+    {
+      //Given
+      var testServer = new TestServer(hostBuilder);
+      var client = testServer.CreateClient();
+      var db = testServer.Services.GetRequiredService<DatabaseContext>();
+      db.Database.EnsureDeleted();
+
+      await AppendJWTHeader(db, client, "johndoe");
+
+      var vehicleData = new ResponseVehicle{
+        Id = 1,
+        VIN = "4Y1SL65848Z411439",
+        Make = "Toyota",
+        Model = "Corolla",
+        Year = 1997,
+        Miles = 145000,
+        Color = "Silver",
+        SellingPrice = 2000,
+        Status = Vehicle.StatusCode.Inventory,
+        VehicleImages = new List<VehicleImage>(),
+      };
+
+      var user = new User{
+        UserName = "johndoe",
+        Email = "test@test.com",
+        Id = 2,
+      };
+
+      await db.Users.AddAsync(user);
+
+      db.SaveChanges();
+
+      var vehicle = new Vehicle
+      {
+        Id = 1,
+        VIN = "4Y1SL65848Z411439",
+        Make = "Toyota",
+        Model = "Corolla",
+        Year = 1997,
+        Miles = 145000,
+        Color = "Silver",
+        SellingPrice = 2000,
+        Status = Vehicle.StatusCode.Inventory,
+        VehicleImages = new List<VehicleImage>(),
+        UserId = 2,
+      };
+
+      db.Vehicles.Add(vehicle);
+
+      db.SaveChanges();
+    
+      //When
+      var response = await client.GetAsync("/Vehicle/History");
+
+      //Then
+
+      var body = JsonSerializer.Deserialize<List<ResponseVehicle>>(await response.Content.ReadAsStringAsync(),
+        new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+
+      body.Count().Should().Be(1);
+
+      body.Should().BeEquivalentTo(vehicleData);
+    }
+
+    [Fact]
+    public async Task Should_Return_An_AuthorizedUsers_Vehicles_StatusCode200()
+    {
+      //Given
+      var testServer = new TestServer(hostBuilder);
+      var client = testServer.CreateClient();
+      var db = testServer.Services.GetRequiredService<DatabaseContext>();
+      db.Database.EnsureDeleted();
+
+      await AppendJWTHeader(db, client, "johndoe");
+
+      var user = new User{
+        UserName = "johndoe",
+        Email = "test@test.com",
+        Id = 2,
+      };
+
+      await db.Users.AddAsync(user);
+
+      db.SaveChanges();
+
+      var vehicle = new Vehicle
+      {
+        Id = 1,
+        VIN = "4Y1SL65848Z411439",
+        Make = "Toyota",
+        Model = "Corolla",
+        Year = 1997,
+        Miles = 145000,
+        Color = "Silver",
+        SellingPrice = 2000,
+        Status = Vehicle.StatusCode.Inventory,
+        UserId = 2,
+        User = user,
+        VehicleImages = new List<VehicleImage>(),
+      };
+
+      db.Vehicles.Add(vehicle);
+
+      db.SaveChanges();
+    
+      //When
+      var response = await client.GetAsync("/Vehicle/History");
+
+      //Then
+      response.StatusCode.Should().Be(200);
+    }
+
+    [Fact]
+    public async Task Should_Return_An_AuthorizedUsers_EmptyListOfVehiclesWith_StatusCode200()
+    {
+      //Given
+      var testServer = new TestServer(hostBuilder);
+      var client = testServer.CreateClient();
+      var db = testServer.Services.GetRequiredService<DatabaseContext>();
+      db.Database.EnsureDeleted();
+
+      await AppendJWTHeader(db, client, "johndoe");
+
+      var user = new User{
+        UserName = "johndoe",
+        Email = "test@test.com",
+        Id = 2,
+      };
+
+      await db.Users.AddAsync(user);
+
+      db.SaveChanges();
+
+      var vehicle = new Vehicle
+      {
+        Id = 1,
+        VIN = "4Y1SL65848Z411439",
+        Make = "Toyota",
+        Model = "Corolla",
+        Year = 1997,
+        Miles = 145000,
+        Color = "Silver",
+        SellingPrice = 2000,
+        Status = Vehicle.StatusCode.Inventory,
+        UserId = 3,
+        User = user,
+        VehicleImages = new List<VehicleImage>(),
+      };
+
+      db.Vehicles.Add(vehicle);
+
+      db.SaveChanges();
+    
+      //When
+      var response = await client.GetAsync("/Vehicle/History");
+
+      //Then
+      response.StatusCode.Should().Be(200);
+    }
+
+    [Fact]
+    public async Task Should_Return_An_AuthorizedUsers_ListOfVehicles()
+    {
+      //Given
+      var testServer = new TestServer(hostBuilder);
+      var client = testServer.CreateClient();
+      var db = testServer.Services.GetRequiredService<DatabaseContext>();
+      db.Database.EnsureDeleted();
+
+      await AppendJWTHeader(db, client, "johndoe");
+      var user = new User{
+        UserName = "johndoe",
+        Email = "test@test.com",
+        Id = 2,
+      };
+
+      await db.Users.AddAsync(user);
+
+      db.SaveChanges();
+
+      db.Vehicles.AddRange(new Vehicle[] {
+        new Vehicle {
+          Id = 1,
+          VIN = "4Y1SL65848Z411439",
+          Make = "Toyota",
+          Model = "Corolla",
+          Year = 1997,
+          Miles = 145000,
+          Color = "Silver",
+          SellingPrice = 2000,
+          Status = Vehicle.StatusCode.Inventory,
+          UserId = 2,
+          User = user,
+          VehicleImages = new List<VehicleImage>()
+        },
+        new Vehicle {
+          Id = 2,
+          VIN = "4Y1SL65848Z411439",
+          Make = "Honda",
+          Model = "Corolla",
+          Year = 1997,
+          Miles = 145000,
+          Color = "Silver",
+          SellingPrice = 2000,
+          Status = Vehicle.StatusCode.Inventory,
+          UserId = 2,
+          User = user,
+          VehicleImages = new List<VehicleImage>()
+        },
+        new Vehicle {
+          Id = 3,
+          VIN = "4Y1SL65848Z411439",
+          Make = "Subaru",
+          Model = "Corolla",
+          Year = 1997,
+          Miles = 145000,
+          Color = "Silver",
+          SellingPrice = 2000,
+          Status = Vehicle.StatusCode.Inventory,
+          UserId = 2,
+          User = user,
+          VehicleImages = new List<VehicleImage>()
+        }
+      });
+
+      db.SaveChanges();
+    
+      //When
+      var response = await client.GetAsync("/Vehicle/History");
+
+      //Then
+      var body = JsonSerializer.Deserialize<List<Vehicle>>(await response.Content.ReadAsStringAsync(),
+        new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+
+      body.Count().Should().Be(3);
     }
   }
 }
