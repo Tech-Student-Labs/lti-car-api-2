@@ -9,8 +9,8 @@ using VehicleDatabase.Data;
 namespace VehicleWebAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210614174428_UsersSchemaUpdate")]
-    partial class UsersSchemaUpdate
+    [Migration("20210611182848_Change year from string to int")]
+    partial class Changeyearfromstringtoint
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
