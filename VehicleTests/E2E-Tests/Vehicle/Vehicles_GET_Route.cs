@@ -500,6 +500,19 @@ namespace VehicleTests.E2E_Tests
 
       await AppendJWTHeader(db, client, "johndoe");
 
+      var vehicleData = new ResponseVehicle{
+        Id = 1,
+        VIN = "4Y1SL65848Z411439",
+        Make = "Toyota",
+        Model = "Corolla",
+        Year = 1997,
+        Miles = 145000,
+        Color = "Silver",
+        SellingPrice = 2000,
+        Status = Vehicle.StatusCode.Inventory,
+        VehicleImages = new List<VehicleImage>(),
+      };
+
       var user = new User{
         UserName = "johndoe",
         Email = "test@test.com",
@@ -534,14 +547,12 @@ namespace VehicleTests.E2E_Tests
 
       //Then
 
-      var body = JsonSerializer.Deserialize<List<Vehicle>>(await response.Content.ReadAsStringAsync(),
+      var body = JsonSerializer.Deserialize<List<ResponseVehicle>>(await response.Content.ReadAsStringAsync(),
         new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
 
       body.Count().Should().Be(1);
 
-      vehicle.User = null;
-
-      body.Should().BeEquivalentTo(vehicle);
+      body.Should().BeEquivalentTo(vehicleData);
     }
 
     [Fact]
@@ -650,7 +661,6 @@ namespace VehicleTests.E2E_Tests
       db.Database.EnsureDeleted();
 
       await AppendJWTHeader(db, client, "johndoe");
-
       var user = new User{
         UserName = "johndoe",
         Email = "test@test.com",
@@ -717,7 +727,5 @@ namespace VehicleTests.E2E_Tests
 
       body.Count().Should().Be(3);
     }
-
-
   }
 }
