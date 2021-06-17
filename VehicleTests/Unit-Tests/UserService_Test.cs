@@ -165,8 +165,8 @@ namespace VehicleTests.Unit_Tests
         //Then
             MockContext.Verify(p => p.Users, Times.Exactly(2));
 
-            success.Should().BeTrue();
-            failure.Should().BeFalse();
+            success.Should().NotBeNull();
+            failure.Should().BeNull();
         }
     }
 }

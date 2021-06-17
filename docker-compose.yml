@@ -1,6 +1,6 @@
 services:
   webapi:
-    image: "raaedprojectapi/webapi"
+    image: raaedprojectapi/webapi
     build: .
     ports:
       - "5001:443"
@@ -10,7 +10,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
   database:
-    image: "rmuehler/vehicle-database"
+    image: rmuehler/vehicle-database
     volumes:
       - sql-data:/var/opt/mssql/data
     ports:
@@ -19,7 +19,8 @@ services:
       SA_PASSWORD: "SusPassword2!"
       ACCEPT_EULA: "Y"
   webui:
-    image: "raaedprojectapi/webui:latest"
+    image: raaedprojectapi/webui
+    pull_policy: always
     ports:
       - "80:80"
 volumes:

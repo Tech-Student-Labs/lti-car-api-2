@@ -38,9 +38,9 @@ namespace VehicleWebAPI.Services
             return _db.Users.Any(u => u.Email == email);
         }
 
-        public bool VerifyCredentials(User user)
+        public User VerifyCredentials(User user)
         {
-            return _db.Users.Any(u => u.UserName == user.UserName && u.Password == user.Password);
+            return _db.Users.FirstOrDefault(u => u.UserName == user.UserName && u.Password == user.Password);
         }
     }
 }

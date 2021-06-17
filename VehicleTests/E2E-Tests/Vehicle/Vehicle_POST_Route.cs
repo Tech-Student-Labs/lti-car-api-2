@@ -33,6 +33,31 @@ namespace VehicleTests.E2E_Tests
                 services.AddDbContext<DatabaseContext>(options => options.UseInMemoryDatabase("VehiclePost"));
             });
 
+        private class TokenHolder
+        {
+            public string Token { get; set; }
+        }
+
+        public async Task<string> AppendJWTHeader(DatabaseContext db, HttpClient client, string username = "johndoe")
+        {
+            db.Users.Add(new User {Email = "johndoe@test.com", UserName = username, Password = "def@123"});
+            db.SaveChanges();
+
+            //handle login for JWT Token
+            var user = new User {Email = "johndoe2@test.com", UserName = username, Password = "def@123"};
+            StringContent query = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
+
+            var loginResponse = await client.PostAsync("/api/auth/login", query);
+            var content = await loginResponse.Content.ReadAsStringAsync();
+
+            var result = JsonSerializer.Deserialize<TokenHolder>(content,
+                new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
+
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + result.Token);
+
+            return result.Token;
+        }
+
         [Fact]
         public async Task Should_Return201_WhenPostRequestIsSubmitted()
         {
@@ -56,6 +81,7 @@ namespace VehicleTests.E2E_Tests
                 UserId = 1
             });
             StringContent query = new StringContent(clean, Encoding.UTF8, "application/json");
+            await AppendJWTHeader(db, client);
 
             // WHEN a POST request is submitted to the vehicle db 
             var response = await client.PostAsync("/vehicle", query);
@@ -100,16 +126,18 @@ namespace VehicleTests.E2E_Tests
                 Miles = 145000,
                 Color = "Silver",
                 SellingPrice = 2000,
-                Status = Vehicle.StatusCode.Inventory,
                 UserId = 1,
+                Status = Vehicle.StatusCode.Inventory,
                 VehicleImages = new List<VehicleImage> {vehicleImage}
             };
+            await AppendJWTHeader(db, client);
             // WHEN a POST request is submitted to the vehicle db
             await client.PostAsJsonAsync("/Vehicle", vehicle1);
 
             // THEN the response body should return the amount of vehicles in db
-            db.Vehicles.Include(v => v.VehicleImages).FirstOrDefault(t => t.Id == vehicle1.Id).Should()
-                .BeEquivalentTo(vehicle1);
+            var dbVehicle = db.Vehicles.Include(v => v.VehicleImages).FirstOrDefault(t => t.Id == vehicle1.Id);
+            dbVehicle.User = null;
+            dbVehicle.Should().BeEquivalentTo(vehicle1);
             await db.Database.EnsureDeletedAsync();
         }
 
@@ -150,6 +178,7 @@ namespace VehicleTests.E2E_Tests
                 UserId = 1
             });
             db.SaveChanges();
+            await AppendJWTHeader(db, client);
 
             // WHEN a POST request is submitted to the vehicle db
             var postResponse = await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
@@ -195,6 +224,7 @@ namespace VehicleTests.E2E_Tests
                 UserId = 1
             });
             db.SaveChanges();
+            await AppendJWTHeader(db, client);
 
             // WHEN a POST request is submitted to the vehicle db 
             var postResponse = await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
@@ -276,6 +306,7 @@ namespace VehicleTests.E2E_Tests
                 UserId = 1
             });
             db.SaveChanges();
+            await AppendJWTHeader(db, client);
 
             // WHEN a POST request is submitted to the vehicle db 
             var postResponse = await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
@@ -357,6 +388,7 @@ namespace VehicleTests.E2E_Tests
                 UserId = 1
             });
             db.SaveChanges();
+            await AppendJWTHeader(db, client);
 
             // WHEN a POST request is submitted to the vehicle db 
             await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
@@ -380,6 +412,7 @@ namespace VehicleTests.E2E_Tests
                 Make = "Mitsubishi",
                 Model = "Eclipse"
             };
+            await AppendJWTHeader(db, client);
 
             //When
             var postResponse = await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
@@ -426,6 +459,7 @@ namespace VehicleTests.E2E_Tests
                 UserId = 1
             });
             db.SaveChanges();
+            await AppendJWTHeader(db, client);
 
             //When
             var postResponse = await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
@@ -470,6 +504,7 @@ namespace VehicleTests.E2E_Tests
                 UserId = 1
             });
             db.SaveChanges();
+            await AppendJWTHeader(db, client);
 
             //When
             var postResponse = await client.PostAsJsonAsync("/vehicle", vehicleToAdd);
