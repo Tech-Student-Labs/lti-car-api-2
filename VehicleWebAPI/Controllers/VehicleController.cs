@@ -53,11 +53,10 @@ namespace VehicleWebAPI.Controllers
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             var userId = identity.Claims.FirstOrDefault(u => u.Type == "id").Value;
             vehicle.UserId = Convert.ToInt32(userId);
-            return Ok(vehicle.UserId);
-            // return _service.CreateVehicle(vehicle) == 1
-            //     ? Created($"/{vehicle.Id}"
-            //         , new {vehicle.Id, vehicle.Make, vehicle.Model, vehicle.VIN})
-            //     : StatusCode(400, "Vehicle could not be added. Try not including a vehicle id.");
+            return _service.CreateVehicle(vehicle) == 1
+                ? Created($"/{vehicle.Id}"
+                    , new {vehicle.Id, vehicle.Make, vehicle.Model, vehicle.VIN})
+                : StatusCode(400, "Vehicle could not be added. Try not including a vehicle id.");
         }
 
         [HttpPut]
