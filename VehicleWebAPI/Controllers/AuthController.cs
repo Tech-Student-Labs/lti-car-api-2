@@ -27,9 +27,9 @@ public class AuthController : ControllerBase
             return BadRequest("Invalid client request");
         }
 
-
+        var dbUser = _service.VerifyCredentials(user);
         //if (user.UserName == "johndoe" && user.Password == "def@123")
-        if (user.UserName == "test" || _service.VerifyCredentials(user))
+        if (dbUser is not null)
         {
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
@@ -39,7 +39,7 @@ public class AuthController : ControllerBase
             {
                 Issuer = "https://localhost:5001",
                 Audience = "https://localhost:5001",
-                Subject = new ClaimsIdentity( new[] {new Claim("username", user.UserName)}),
+                Subject = new ClaimsIdentity( new[] {new Claim("username", dbUser.UserName), new Claim("id", dbUser.Id.ToString())}),
                 Expires = DateTime.UtcNow.AddDays(2),
                 SigningCredentials = signinCredentials,
 
