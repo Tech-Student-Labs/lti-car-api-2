@@ -54,7 +54,7 @@ namespace VehicleWebAPI.Controllers
             var userId = identity.Claims.FirstOrDefault(u => u.Type == "id").Value;
             vehicle.UserId = Convert.ToInt32(userId);
             return _service.CreateVehicle(vehicle) == 1
-                ? Created($"/{vehicle.Id}"
+                ? Created($"vehicle/{vehicle.Id}"
                     , new {vehicle.Id, vehicle.Make, vehicle.Model, vehicle.VIN})
                 : StatusCode(400, "Vehicle could not be added. Try not including a vehicle id.");
         }
