@@ -80,6 +80,7 @@ namespace VehicleTests.E2E_Tests
             StringContent query = new StringContent(registration, Encoding.UTF8, "application/json");
 
             var response = await client.PostAsync("/User", query);
+            var result = await response.Content.ReadAsStringAsync();
 
             db.SaveChanges();
 
@@ -87,6 +88,7 @@ namespace VehicleTests.E2E_Tests
             var user = db.Users.FirstOrDefault(user => user.UserName == "harambe");
 
             user.Should().BeEquivalentTo(monke);
+            result.Length.Should().BeGreaterThan(0);
             // response.Content.ReadAsStringAsync().Should().NotBeNull();
 
             db.Database.EnsureDeleted();

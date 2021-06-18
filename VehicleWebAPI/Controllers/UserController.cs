@@ -12,10 +12,12 @@ namespace VehicleWebAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserDatabaseService _service;
+        private readonly IUserAuthenticationService _authService;
 
-        public UserController(IUserDatabaseService userDatabaseService)
+        public UserController(IUserDatabaseService userDatabaseService, IUserAuthenticationService authService)
         {
             _service = userDatabaseService;
+            _authService = authService;
         }
 
         [HttpGet]
@@ -46,8 +48,9 @@ namespace VehicleWebAPI.Controllers
             }
 
             var u = _service.AddUser(user);
+            var t = _authService.Authenticate(user);
 
-            return Created($"/user/{u.Id}", u);
+            return Created($"/user/{u.Id}", t);
         }
     }
 }
