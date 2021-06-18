@@ -59,7 +59,7 @@ namespace VehicleTests.E2E_Tests
         public async Task Should_ReturnAnEmpyList_WhenUserDBIsEmpty()
         {
             //Given the User db is empty
-            var testServer = new TestServer(hostBuilder(Guid.NewGuid().ToString()));
+            var testServer = new TestServer(hostBuilder(System.Guid.NewGuid().ToString()));
             var client = testServer.CreateClient();
             
             //When a list of users is requested by the api
@@ -75,7 +75,7 @@ namespace VehicleTests.E2E_Tests
         public async Task TestName()
         {
         //Given that the service is running
-        var testServer = new TestServer(hostBuilder);
+        var testServer = new TestServer(hostBuilder(System.Guid.NewGuid().ToString()));
         var client = testServer.CreateClient();
         var db = testServer.Services.GetRequiredService<DatabaseContext>();
         db.Database.EnsureDeleted();
