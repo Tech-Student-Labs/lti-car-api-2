@@ -13,9 +13,11 @@ using VehicleWebAPI.Services;
 public class AuthController : ControllerBase
 {
     private readonly IUserDatabaseService _service;
+    private readonly IUserAuthenticationService _authService;
 
-    public AuthController(IUserDatabaseService service) {
+    public AuthController(IUserDatabaseService service, IUserAuthenticationService authService) {
         _service = service;
+        _authService = authService;
     }
 
     // GET api/values
@@ -30,22 +32,7 @@ public class AuthController : ControllerBase
         var dbUser = _service.VerifyCredentials(user);
         if (dbUser is not null)
         {
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
-            var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            var tokenOptions = new SecurityTokenDescriptor
-            {
-                Issuer = "https://localhost:5001",
-                Audience = "https://localhost:5001",
-                Subject = new ClaimsIdentity( new[] {new Claim("username", dbUser.UserName), new Claim("id", dbUser.Id.ToString())}),
-                Expires = DateTime.UtcNow.AddDays(2),
-                SigningCredentials = signinCredentials,
-
-            };
-
-            var token = tokenHandler.CreateToken(tokenOptions);
-            var tokenString = tokenHandler.WriteToken(token);
+            var tokenString = _authService.Authenticate(dbUser);
             return Ok(new { Token = tokenString });
         }
         else

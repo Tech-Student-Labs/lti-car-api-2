@@ -75,6 +75,7 @@ namespace VehicleWebAPI
       services.AddScoped<IVehicleDatabaseService, VehicleDatabaseService>();
       services.AddScoped<IInventoryDatabaseService, InventoryDatabaseService>();
       services.AddScoped<IUserDatabaseService, UserDatabaseService>();
+      services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

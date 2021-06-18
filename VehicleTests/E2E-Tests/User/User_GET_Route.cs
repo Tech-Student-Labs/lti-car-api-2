@@ -45,7 +45,6 @@ namespace VehicleTests.E2E_Tests
 
             var loginResponse = await client.PostAsync("/api/auth/login", query);
             var content = await loginResponse.Content.ReadAsStringAsync();
-
             var result = JsonSerializer.Deserialize<TokenHolder>(content,
                 new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
             
