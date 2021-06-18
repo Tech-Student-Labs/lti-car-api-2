@@ -28,7 +28,6 @@ public class AuthController : ControllerBase
         }
 
         var dbUser = _service.VerifyCredentials(user);
-        //if (user.UserName == "johndoe" && user.Password == "def@123")
         if (dbUser is not null)
         {
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
