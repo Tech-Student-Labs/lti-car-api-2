@@ -50,7 +50,7 @@ namespace VehicleWebAPI.Controllers
             var u = _service.AddUser(user);
             var t = _authService.Authenticate(user);
 
-            return Created($"/user/{u.Id}", t);
+            return Created($"/user/{u.Id}", new { Token = t });
         }
     }
 }
