@@ -36,12 +36,11 @@ namespace VehicleTests.E2E_Tests
         private class TokenHolder{
             public string Token { get; set; }
         }
-        public async Task<string> AppendJWTHeader(DatabaseContext db, HttpClient client, string username = "johndoe") {
-            db.Users.Add(new User{Email = "johndoe@test.com", UserName = username, Password = "def@123"});
+        public async Task<string> AppendJWTHeader(DatabaseContext db, HttpClient client, User user) {
+            db.Users.Add(user);
             db.SaveChanges();
 
             //handle login for JWT Token
-            var user = new User{Email = "johndoe2@test.com", UserName = username, Password = "def@123"};
             StringContent query = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
 
             var loginResponse = await client.PostAsync("/api/auth/login", query);
@@ -72,7 +71,7 @@ namespace VehicleTests.E2E_Tests
         }
 
         [Fact]
-        public async Task TestName()
+        public async Task Should_ReturnCode200_WhenRquestHasValidJWTToken()
         {
         //Given that the service is running
         var testServer = new TestServer(hostBuilder(System.Guid.NewGuid().ToString()));
@@ -85,15 +84,36 @@ namespace VehicleTests.E2E_Tests
             Email = "test@test.com",
             Id = 2,
         };
-
-        await db.Users.AddAsync(user);
-
-        db.SaveChanges();
-        await AppendJWTHeader(db, client, "johndoe");
+        await AppendJWTHeader(db, client, user);
         //When GET is called with a paramater of an ID
         var response = await client.GetAsync("/User/Profile");
         //Then return a 200 code
         response.StatusCode.Should().Be(200);
+        }
+
+        [Fact]
+        public async Task Should_ReturnUserInfo_WhenRequestHasValidJWTToken()
+        {
+        //Given that the service is running
+        var testServer = new TestServer(hostBuilder(System.Guid.NewGuid().ToString()));
+        var client = testServer.CreateClient();
+        var db = testServer.Services.GetRequiredService<DatabaseContext>();
+        db.Database.EnsureDeleted();
+
+        var user = new User{
+            UserName = "johndoe",
+            Name = "John Doe",
+            Email = "test@test.com",
+            Id = 2,
+        };
+        await AppendJWTHeader(db, client, user);
+        //When GET is called with a paramater of an ID
+        var response = await client.GetAsync("/User/Profile");
+        var content = await response.Content.ReadAsStringAsync();
+        var result = JsonSerializer.Deserialize<User>(content,
+        new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+        //Then return a 200 code
+        result.Should().BeEquivalentTo(user);
         }
     }
 }

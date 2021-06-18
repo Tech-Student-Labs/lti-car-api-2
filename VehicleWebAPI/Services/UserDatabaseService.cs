@@ -21,6 +21,11 @@ namespace VehicleWebAPI.Services
             return _db.Users.ToList();
         }
 
+        public User GetUserById(int id)
+        {
+            return _db.Users.FirstOrDefault(u => u.Id == id);
+        }
+
         public User AddUser(User user)
         {
             _db.Users.Add(user);
