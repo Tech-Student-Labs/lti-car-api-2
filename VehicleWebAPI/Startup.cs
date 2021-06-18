@@ -59,7 +59,7 @@ namespace VehicleWebAPI
       {
         options.AddDefaultPolicy(builder =>
         {
-          builder.WithOrigins("http://localhost:4200")
+          builder.WithOrigins("http://localhost")
           .AllowAnyHeader()
           .AllowAnyMethod()
           .AllowCredentials();
@@ -71,7 +71,7 @@ namespace VehicleWebAPI
       {
           c.SwaggerDoc("v1", new OpenApiInfo {Title = "VehicleDatabase", Version = "v1"});
       });
-      services.AddDbContext<DatabaseContext>(options => options.UseSqlServer("Server=localhost;Database=Vehicle;User=sa;Password=SusPassword2!"));
+      services.AddDbContext<DatabaseContext>(options => options.UseSqlServer("Server=database;Database=Vehicle;User=sa;Password=SusPassword2!"));
       services.AddScoped<IVehicleDatabaseService, VehicleDatabaseService>();
       services.AddScoped<IInventoryDatabaseService, InventoryDatabaseService>();
       services.AddScoped<IUserDatabaseService, UserDatabaseService>();
