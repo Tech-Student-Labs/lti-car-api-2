@@ -56,7 +56,7 @@ namespace VehicleTests.E2E_Tests
     }
 
     [Fact]
-    public async Task TestName()
+    public async Task should_return200CodeWhen_vehicleListIsEmpty()
     {
       //GIVEN that the service is running and the vehicle list is empty
       var testServer = new TestServer(hostBuilder);
